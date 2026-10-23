@@ -1,0 +1,12 @@
+[submodule "simulator"]
+	path = simulator
+	url = git@github.com:vegedy/Soly-Simulator.git
+	branch = main
+[submodule "ingestion"]
+	path = ingestion
+	url = git@github.com:vegedy/Soly-Ingestion.git
+	branch = main
+[submodule "processing"]
+	path = processing
+	url = git@github.com:vegedy/Soly-Processing.git
+	branch = main
