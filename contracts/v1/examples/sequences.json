@@ -1,0 +1,287 @@
+[
+  {
+    "name": "duplicate-and-two-sensors",
+    "events": [
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_grid",
+        "state": "1",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "tick",
+        "installation_id": "demo_001",
+        "ts": "2026-10-06T11:00:00.000000Z"
+      }
+    ],
+    "expected": [
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000000Z",
+        "entity_id": "sensor.demo_grid",
+        "state": "1",
+        "quality": "valid"
+      },
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "quality": "valid"
+      }
+    ]
+  },
+  {
+    "name": "conflict-until-next-unambiguous-value",
+    "events": [
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "1",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "2",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "3",
+        "ts": "2026-10-06T11:00:10.000000Z",
+        "measurement_kind": "change"
+      }
+    ],
+    "expected": [
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": null,
+        "quality": "conflict"
+      },
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:10.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "3",
+        "quality": "valid"
+      }
+    ]
+  },
+  {
+    "name": "raw-string-conflict",
+    "events": [
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "0.0",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      }
+    ],
+    "expected": [
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": null,
+        "quality": "conflict"
+      }
+    ]
+  },
+  {
+    "name": "unavailable-and-recovery",
+    "events": [
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "1",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "unavailable",
+        "ts": "2026-10-06T11:00:10.000000Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "ts": "2026-10-06T11:00:20.000000Z",
+        "measurement_kind": "change"
+      }
+    ],
+    "expected": [
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "1",
+        "quality": "valid"
+      },
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:10.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "unavailable",
+        "quality": "invalid"
+      },
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:20.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "quality": "valid"
+      }
+    ]
+  },
+  {
+    "name": "snapshot-start-not-source-time",
+    "events": [
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "ts": "2026-10-06T10:59:57.918502Z",
+        "measurement_kind": "snapshot",
+        "valid_from": "2026-10-06T11:00:00.000000Z"
+      }
+    ],
+    "expected": [
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "0",
+        "quality": "valid"
+      }
+    ]
+  },
+  {
+    "name": "snapshot-change-conflict-at-effective-time",
+    "events": [
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "1",
+        "ts": "2026-10-06T10:59:57.918502Z",
+        "measurement_kind": "snapshot",
+        "valid_from": "2026-10-06T11:00:00.000000Z"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "2",
+        "ts": "2026-10-06T11:00:00.000000Z",
+        "measurement_kind": "change"
+      }
+    ],
+    "expected": [
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000000Z",
+        "entity_id": "sensor.demo_pv",
+        "state": null,
+        "quality": "conflict"
+      }
+    ]
+  },
+  {
+    "name": "distinct-microseconds",
+    "events": [
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "2",
+        "ts": "2026-10-06T11:00:00.000002Z",
+        "measurement_kind": "change"
+      },
+      {
+        "schema_version": 1,
+        "event_type": "measurement",
+        "installation_id": "demo_001",
+        "entity_id": "sensor.demo_pv",
+        "state": "1",
+        "ts": "2026-10-06T11:00:00.000001Z",
+        "measurement_kind": "change"
+      }
+    ],
+    "expected": [
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000001Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "1",
+        "quality": "valid"
+      },
+      {
+        "installation_id": "demo_001",
+        "at": "2026-10-06T11:00:00.000002Z",
+        "entity_id": "sensor.demo_pv",
+        "state": "2",
+        "quality": "valid"
+      }
+    ]
+  }
+]

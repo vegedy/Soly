@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "roles": [
+    {
+      "role": "pv",
+      "requirement": "balance_core",
+      "source_unit": "kW",
+      "processing_unit": "W",
+      "sign": "nonnegative_generation",
+      "required_in_source_profile": true
+    },
+    {
+      "role": "grid",
+      "requirement": "balance_core",
+      "source_unit": "kW",
+      "processing_unit": "W",
+      "sign": "positive_import_negative_export",
+      "required_in_source_profile": true
+    },
+    {
+      "role": "battery_net",
+      "requirement": "balance_core",
+      "source_unit": "W",
+      "processing_unit": "W",
+      "sign": "positive_charge_negative_discharge",
+      "required_in_source_profile": true
+    },
+    {
+      "role": "soc_1",
+      "requirement": "context",
+      "source_unit": "%",
+      "processing_unit": "%",
+      "sign": "percentage_0_to_100",
+      "required_in_source_profile": true
+    },
+    {
+      "role": "soc_2",
+      "requirement": "context",
+      "source_unit": "%",
+      "processing_unit": "%",
+      "sign": "percentage_0_to_100",
+      "required_in_source_profile": true
+    },
+    {
+      "role": "shelly_1",
+      "requirement": "optional",
+      "source_unit": "W",
+      "processing_unit": "W",
+      "sign": "positive_charge_negative_discharge",
+      "required_in_source_profile": false
+    },
+    {
+      "role": "shelly_2",
+      "requirement": "optional",
+      "source_unit": "W",
+      "processing_unit": "W",
+      "sign": "positive_charge_negative_discharge",
+      "required_in_source_profile": false
+    },
+    {
+      "role": "wallbox",
+      "requirement": "optional",
+      "source_unit": "W",
+      "processing_unit": "W",
+      "sign": "nonnegative_consumption",
+      "required_in_source_profile": false
+    }
+  ]
+}

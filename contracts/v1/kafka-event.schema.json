@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:soly:contracts:v1:kafka-event",
+  "title": "Soly v1 Kafka measurement or tick",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "event_type": {
+          "const": "measurement"
+        },
+        "installation_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "state": {
+          "type": "string"
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d\\.\\d{6}Z$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "measurement_kind": {
+          "const": "change"
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_type",
+        "installation_id",
+        "entity_id",
+        "state",
+        "ts",
+        "measurement_kind"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "event_type": {
+          "const": "measurement"
+        },
+        "installation_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "state": {
+          "type": "string"
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d\\.\\d{6}Z$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "measurement_kind": {
+          "const": "snapshot"
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d\\.\\d{6}Z$",
+          "not": {
+            "pattern": "\\s"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_type",
+        "installation_id",
+        "entity_id",
+        "state",
+        "ts",
+        "measurement_kind",
+        "valid_from"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "integer",
+          "const": 1
+        },
+        "event_type": {
+          "const": "tick"
+        },
+        "installation_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d\\.\\d{6}Z$",
+          "not": {
+            "pattern": "\\s"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_type",
+        "installation_id",
+        "ts"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

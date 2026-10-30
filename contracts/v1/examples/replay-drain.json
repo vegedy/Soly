@@ -1,0 +1,26 @@
+{
+  "evaluation_start": "2026-10-06T11:00:00.000000Z",
+  "evaluation_end": "2026-10-06T11:00:25.000000Z",
+  "last_complete_window_end": "2026-10-06T11:00:20.000000Z",
+  "out_of_orderness_seconds": 30,
+  "watermark_resolution_microseconds": 1000,
+  "steps": [
+    {
+      "tick": "2026-10-06T11:00:20.000000Z",
+      "expected_closed": false
+    },
+    {
+      "tick": "2026-10-06T11:00:50.000000Z",
+      "expected_closed": false
+    },
+    {
+      "tick": "2026-10-06T11:01:00.000000Z",
+      "expected_closed": true
+    }
+  ],
+  "expected_complete_window_ends": [
+    "2026-10-06T11:00:10.000000Z",
+    "2026-10-06T11:00:20.000000Z"
+  ],
+  "description": "Bounded-out-of-orderness example only: watermark = max timestamp - 30s - 1ms. The future Flink job must verify actual watermark progress."
+}

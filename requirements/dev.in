@@ -1,0 +1,7 @@
+pytest==9.1.1
+ruff==0.17.2
+mypy==2.4.0
+jsonschema==4.26.0
+rfc3339-validator==0.1.4
+# Keep the Windows pytest dependency in the cross-platform lock.
+colorama==0.4.6

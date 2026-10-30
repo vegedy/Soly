@@ -1,0 +1,282 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "roles": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "pv"
+              },
+              "requirement": {
+                "const": "balance_core"
+              },
+              "source_unit": {
+                "const": "kW"
+              },
+              "processing_unit": {
+                "const": "W"
+              },
+              "sign": {
+                "const": "nonnegative_generation"
+              },
+              "required_in_source_profile": {
+                "const": true
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "grid"
+              },
+              "requirement": {
+                "const": "balance_core"
+              },
+              "source_unit": {
+                "const": "kW"
+              },
+              "processing_unit": {
+                "const": "W"
+              },
+              "sign": {
+                "const": "positive_import_negative_export"
+              },
+              "required_in_source_profile": {
+                "const": true
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "battery_net"
+              },
+              "requirement": {
+                "const": "balance_core"
+              },
+              "source_unit": {
+                "const": "W"
+              },
+              "processing_unit": {
+                "const": "W"
+              },
+              "sign": {
+                "const": "positive_charge_negative_discharge"
+              },
+              "required_in_source_profile": {
+                "const": true
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "soc_1"
+              },
+              "requirement": {
+                "const": "context"
+              },
+              "source_unit": {
+                "const": "%"
+              },
+              "processing_unit": {
+                "const": "%"
+              },
+              "sign": {
+                "const": "percentage_0_to_100"
+              },
+              "required_in_source_profile": {
+                "const": true
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "soc_2"
+              },
+              "requirement": {
+                "const": "context"
+              },
+              "source_unit": {
+                "const": "%"
+              },
+              "processing_unit": {
+                "const": "%"
+              },
+              "sign": {
+                "const": "percentage_0_to_100"
+              },
+              "required_in_source_profile": {
+                "const": true
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "shelly_1"
+              },
+              "requirement": {
+                "const": "optional"
+              },
+              "source_unit": {
+                "const": "W"
+              },
+              "processing_unit": {
+                "const": "W"
+              },
+              "sign": {
+                "const": "positive_charge_negative_discharge"
+              },
+              "required_in_source_profile": {
+                "const": false
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "shelly_2"
+              },
+              "requirement": {
+                "const": "optional"
+              },
+              "source_unit": {
+                "const": "W"
+              },
+              "processing_unit": {
+                "const": "W"
+              },
+              "sign": {
+                "const": "positive_charge_negative_discharge"
+              },
+              "required_in_source_profile": {
+                "const": false
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "role": {
+                "const": "wallbox"
+              },
+              "requirement": {
+                "const": "optional"
+              },
+              "source_unit": {
+                "const": "W"
+              },
+              "processing_unit": {
+                "const": "W"
+              },
+              "sign": {
+                "const": "nonnegative_consumption"
+              },
+              "required_in_source_profile": {
+                "const": false
+              }
+            },
+            "required": [
+              "role",
+              "requirement",
+              "source_unit",
+              "processing_unit",
+              "sign",
+              "required_in_source_profile"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "roles"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:soly:contracts:v1:sensor-catalog"
+}

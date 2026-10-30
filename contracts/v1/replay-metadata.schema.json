@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "snapshot_lines": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "snapshot_valid_from": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(?:\\.\\d{1,6})?(?:Z|[+-]\\d{2}:\\d{2})$",
+      "not": {
+        "anyOf": [
+          {
+            "pattern": "-00:00$"
+          },
+          {
+            "pattern": "\\s"
+          }
+        ]
+      }
+    },
+    "remaining_measurement_kind": {
+      "const": "change"
+    }
+  },
+  "required": [
+    "schema_version",
+    "snapshot_lines",
+    "snapshot_valid_from",
+    "remaining_measurement_kind"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:soly:contracts:v1:replay-metadata"
+}
