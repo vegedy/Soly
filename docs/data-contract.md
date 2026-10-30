@@ -272,6 +272,17 @@ then integrate their merged commits in the main repository. The final main CI
 additionally checks exact file sets, hashes and source-commit provenance with
 initialized submodules; the standalone contract job remains independent.
 
+Run that separate integration check from a checkout with initialized submodules
+and full main-repository history (use `git fetch --unshallow` for a shallow clone):
+
+```bash
+python -m pytest -m service_copies
+```
+
+It also tests that missing/extra files, content drift, wrong hashes, invalid source
+commits and missing immutable README links are rejected. CI uses a separate
+`service-copies` job with full history and recursive submodule checkout.
+
 ## Versioning and changes
 
 Published v1 schema, catalog, semantic examples and interpretation are immutable.

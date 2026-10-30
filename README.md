@@ -23,6 +23,13 @@ python -m pip install --require-hashes --only-binary=:all: -r requirements/dev.t
 python -m pytest
 ```
 
+Der separate Abgleich aller Service-Kopien benötigt initialisierte Submodule und
+die vollständige Hauptrepo-Historie:
+
+```bash
+python -m pytest -m service_copies
+```
+
 ## Submodules
 
 Die Komponenten `simulator`, `ingestion` und `processing` sind eigenständige
