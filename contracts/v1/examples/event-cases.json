@@ -1,0 +1,846 @@
+[
+  {
+    "name": "legacy-offset-microseconds",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00"
+    },
+    "valid": true
+  },
+  {
+    "name": "explicit-change",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "raw-snapshot",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "measurement_kind": "snapshot",
+      "valid_from": "2026-10-06T13:00:00+02:00"
+    },
+    "valid": true
+  },
+  {
+    "name": "state-0",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "0",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "state-unknown",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "unknown",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "state-unavailable",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "unavailable",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "state-empty",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "state-NaN",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "NaN",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "state-not-a-number",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "not-a-number",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "measurement",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": true,
+    "key": "demo_001"
+  },
+  {
+    "name": "snapshot",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "snapshot",
+      "valid_from": "2026-10-06T11:00:00.000000Z"
+    },
+    "valid": true
+  },
+  {
+    "name": "tick",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "tick",
+      "installation_id": "demo_001",
+      "ts": "2026-10-06T11:00:00.000000Z"
+    },
+    "valid": true,
+    "key": "demo_001"
+  },
+  {
+    "name": "raw-time-2026-10-06T11:00:00Z",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00Z"
+    },
+    "valid": true
+  },
+  {
+    "name": "raw-time-2026-10-06T11:00:00.1Z",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00.1Z"
+    },
+    "valid": true
+  },
+  {
+    "name": "raw-time-2026-10-06T05:30:00.123456-05:30",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T05:30:00.123456-05:30"
+    },
+    "valid": true
+  },
+  {
+    "name": "metadata",
+    "contract": "metadata",
+    "event": {
+      "schema_version": 1,
+      "snapshot_lines": [
+        1,
+        2
+      ],
+      "snapshot_valid_from": "2026-10-06T11:00:00Z",
+      "remaining_measurement_kind": "change"
+    },
+    "valid": true
+  },
+  {
+    "name": "numeric-state",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": 0,
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "type",
+    "expected_pointer": "/state",
+    "reason": "state must remain a string"
+  },
+  {
+    "name": "null-state",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": null,
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "type",
+    "expected_pointer": "/state",
+    "reason": "null is not a raw state"
+  },
+  {
+    "name": "empty-entity",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "minLength",
+    "expected_pointer": "/entity_id",
+    "reason": "identifier is empty"
+  },
+  {
+    "name": "space-installation",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo 001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "pattern",
+    "expected_pointer": "/installation_id",
+    "reason": "whitespace in identifier"
+  },
+  {
+    "name": "newline-installation",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001\n",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "not",
+    "expected_pointer": "/installation_id",
+    "reason": "trailing newline in identifier"
+  },
+  {
+    "name": "newline-time",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00.000000Z\n",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "not",
+    "expected_pointer": "/ts",
+    "reason": "trailing newline in timestamp"
+  },
+  {
+    "name": "unknown-version",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 2,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "const",
+    "expected_pointer": "/schema_version",
+    "reason": "unsupported version"
+  },
+  {
+    "name": "boolean-version",
+    "contract": "kafka",
+    "event": {
+      "schema_version": true,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "type",
+    "expected_pointer": "/schema_version",
+    "reason": "boolean is not an integer"
+  },
+  {
+    "name": "unknown-type",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "status",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "const",
+    "expected_pointer": "/event_type",
+    "reason": "unsupported event type"
+  },
+  {
+    "name": "unknown-kind",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "update"
+    },
+    "valid": false,
+    "expected_keyword": "const",
+    "expected_pointer": "/measurement_kind",
+    "reason": "unsupported measurement kind"
+  },
+  {
+    "name": "extra-field",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change",
+      "extra": "value"
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "unknown fields are rejected"
+  },
+  {
+    "name": "tick-with-sensor",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "tick",
+      "installation_id": "demo_001",
+      "ts": "2026-10-06T11:00:00.000000Z",
+      "state": "0"
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "ticks contain no sensor values"
+  },
+  {
+    "name": "change-with-valid-from",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change",
+      "valid_from": "2026-10-06T10:59:57.918502Z"
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "valid_from is snapshot-only"
+  },
+  {
+    "name": "kafka-offset",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "pattern",
+    "expected_pointer": "/ts",
+    "reason": "Kafka requires canonical UTC"
+  },
+  {
+    "name": "kafka-short-fraction",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "pattern",
+    "expected_pointer": "/ts",
+    "reason": "Kafka requires six fractional digits"
+  },
+  {
+    "name": "missing-schema_version",
+    "contract": "kafka",
+    "event": {
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "missing schema_version"
+  },
+  {
+    "name": "missing-event_type",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "missing event_type"
+  },
+  {
+    "name": "missing-installation_id",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "missing installation_id"
+  },
+  {
+    "name": "missing-entity_id",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "missing entity_id"
+  },
+  {
+    "name": "missing-state",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "missing state"
+  },
+  {
+    "name": "missing-ts",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "missing ts"
+  },
+  {
+    "name": "missing-measurement_kind",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "missing measurement_kind"
+  },
+  {
+    "name": "snapshot-without-boundary",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "snapshot"
+    },
+    "valid": false,
+    "expected_keyword": "required",
+    "expected_pointer": "",
+    "reason": "snapshot requires valid_from"
+  },
+  {
+    "name": "raw-naive",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00"
+    },
+    "valid": false,
+    "expected_keyword": "pattern",
+    "expected_pointer": "/ts",
+    "reason": "naive"
+  },
+  {
+    "name": "raw-invalid-date",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-02-30T11:00:00Z"
+    },
+    "valid": false,
+    "expected_keyword": "format",
+    "expected_pointer": "/ts",
+    "reason": "invalid-date"
+  },
+  {
+    "name": "raw-invalid-hour",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T25:00:00Z"
+    },
+    "valid": false,
+    "expected_keyword": "format",
+    "expected_pointer": "/ts",
+    "reason": "invalid-hour"
+  },
+  {
+    "name": "raw-leap-second",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:60Z"
+    },
+    "valid": false,
+    "expected_keyword": "pattern",
+    "expected_pointer": "/ts",
+    "reason": "leap-second"
+  },
+  {
+    "name": "raw-precision-loss",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00.1234567Z"
+    },
+    "valid": false,
+    "expected_keyword": "pattern",
+    "expected_pointer": "/ts",
+    "reason": "precision-loss"
+  },
+  {
+    "name": "raw-unknown-offset",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00-00:00"
+    },
+    "valid": false,
+    "expected_keyword": "not",
+    "expected_pointer": "/ts",
+    "reason": "unknown-offset"
+  },
+  {
+    "name": "raw-invalid-offset",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T11:00:00+24:00"
+    },
+    "valid": false,
+    "expected_keyword": "format",
+    "expected_pointer": "/ts",
+    "reason": "invalid-offset"
+  },
+  {
+    "name": "raw-forbidden-installation_id",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "installation_id": "untrusted"
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "raw source may not supply installation_id"
+  },
+  {
+    "name": "raw-forbidden-schema_version",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "schema_version": 1
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "raw source may not supply schema_version"
+  },
+  {
+    "name": "raw-forbidden-event_type",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "event_type": "measurement"
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "raw source may not supply event_type"
+  },
+  {
+    "name": "raw-forbidden-extra",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "extra": 1
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "raw source may not supply extra"
+  },
+  {
+    "name": "raw-orphan-valid-from",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "valid_from": "2026-10-06T12:59:57.918502+02:00"
+    },
+    "valid": false,
+    "expected_keyword": "additionalProperties",
+    "expected_pointer": "",
+    "reason": "valid_from requires explicit snapshot kind"
+  },
+  {
+    "name": "snapshot-before-source",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "snapshot",
+      "valid_from": "2026-10-06T10:00:00.000000Z"
+    },
+    "valid": false,
+    "expected_pointer": "/valid_from",
+    "reason": "snapshot boundary precedes source time",
+    "expected_code": "SNAPSHOT_BOUNDARY"
+  },
+  {
+    "name": "raw-snapshot-before-source",
+    "contract": "raw",
+    "event": {
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T12:59:57.918502+02:00",
+      "measurement_kind": "snapshot",
+      "valid_from": "2026-10-06T10:00:00Z"
+    },
+    "valid": false,
+    "expected_pointer": "/valid_from",
+    "reason": "snapshot boundary precedes source time",
+    "expected_code": "SNAPSHOT_BOUNDARY"
+  },
+  {
+    "name": "off-grid-tick",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "tick",
+      "installation_id": "demo_001",
+      "ts": "2026-10-06T11:00:01.000000Z"
+    },
+    "valid": false,
+    "expected_pointer": "/ts",
+    "reason": "tick must lie on a ten-second UTC boundary",
+    "expected_code": "TICK_GRID"
+  },
+  {
+    "name": "fractional-tick",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "tick",
+      "installation_id": "demo_001",
+      "ts": "2026-10-06T11:00:00.000001Z"
+    },
+    "valid": false,
+    "expected_pointer": "/ts",
+    "reason": "tick must have zero fractional seconds",
+    "expected_code": "TICK_GRID"
+  },
+  {
+    "name": "wrong-key",
+    "contract": "kafka",
+    "event": {
+      "schema_version": 1,
+      "event_type": "measurement",
+      "installation_id": "demo_001",
+      "entity_id": "sensor.demo_pv",
+      "state": "2.629",
+      "ts": "2026-10-06T10:59:57.918502Z",
+      "measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_pointer": "/installation_id",
+    "reason": "Kafka key differs from payload",
+    "expected_code": "KEY_MISMATCH",
+    "key": "different_installation"
+  },
+  {
+    "name": "duplicate-snapshot-line",
+    "contract": "metadata",
+    "event": {
+      "schema_version": 1,
+      "snapshot_lines": [
+        1,
+        1
+      ],
+      "snapshot_valid_from": "2026-10-06T11:00:00Z",
+      "remaining_measurement_kind": "change"
+    },
+    "valid": false,
+    "expected_keyword": "uniqueItems",
+    "expected_pointer": "/snapshot_lines",
+    "reason": "snapshot line declarations must be unique"
+  }
+]

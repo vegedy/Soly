@@ -1,0 +1,13 @@
+{
+  "installation_id": "demo_001",
+  "entities": {
+    "sensor.demo_pv": "pv",
+    "sensor.demo_grid": "grid",
+    "sensor.demo_battery_net": "battery_net",
+    "sensor.demo_soc_1": "soc_1",
+    "sensor.demo_soc_2": "soc_2",
+    "sensor.demo_shelly_1": "shelly_1",
+    "sensor.demo_shelly_2": "shelly_2",
+    "sensor.demo_wallbox": "wallbox"
+  }
+}

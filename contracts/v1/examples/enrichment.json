@@ -1,0 +1,67 @@
+{
+  "description": "Synthetic contract expectation; no pipeline execution is implied.",
+  "configuration": {
+    "installation_id": "demo_001",
+    "entities": {
+      "sensor.demo_pv": "pv",
+      "sensor.demo_grid": "grid",
+      "sensor.demo_battery_net": "battery_net",
+      "sensor.demo_soc_1": "soc_1",
+      "sensor.demo_soc_2": "soc_2",
+      "sensor.demo_shelly_1": "shelly_1",
+      "sensor.demo_shelly_2": "shelly_2",
+      "sensor.demo_wallbox": "wallbox"
+    }
+  },
+  "metadata": {
+    "schema_version": 1,
+    "snapshot_lines": [
+      1
+    ],
+    "snapshot_valid_from": "2026-10-06T13:00:00+02:00",
+    "remaining_measurement_kind": "change"
+  },
+  "records": [
+    {
+      "line": 1,
+      "raw": {
+        "entity_id": "sensor.demo_pv",
+        "state": "2.629",
+        "ts": "2026-10-06T12:59:57.918502+02:00"
+      },
+      "expected": {
+        "key": "demo_001",
+        "payload": {
+          "schema_version": 1,
+          "event_type": "measurement",
+          "installation_id": "demo_001",
+          "entity_id": "sensor.demo_pv",
+          "state": "2.629",
+          "ts": "2026-10-06T10:59:57.918502Z",
+          "measurement_kind": "snapshot",
+          "valid_from": "2026-10-06T11:00:00.000000Z"
+        }
+      }
+    },
+    {
+      "line": 2,
+      "raw": {
+        "entity_id": "sensor.demo_pv",
+        "state": "2.629",
+        "ts": "2026-10-06T12:59:57.918502+02:00"
+      },
+      "expected": {
+        "key": "demo_001",
+        "payload": {
+          "schema_version": 1,
+          "event_type": "measurement",
+          "installation_id": "demo_001",
+          "entity_id": "sensor.demo_pv",
+          "state": "2.629",
+          "ts": "2026-10-06T10:59:57.918502Z",
+          "measurement_kind": "change"
+        }
+      }
+    }
+  ]
+}

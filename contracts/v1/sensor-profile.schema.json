@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "properties": {
+    "installation_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "not": {
+        "pattern": "\\s"
+      }
+    },
+    "entities": {
+      "type": "object",
+      "minProperties": 5,
+      "maxProperties": 8,
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^\\S+$",
+        "not": {
+          "pattern": "\\s"
+        }
+      },
+      "additionalProperties": {
+        "enum": [
+          "pv",
+          "grid",
+          "battery_net",
+          "soc_1",
+          "soc_2",
+          "shelly_1",
+          "shelly_2",
+          "wallbox"
+        ]
+      }
+    }
+  },
+  "required": [
+    "installation_id",
+    "entities"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:soly:contracts:v1:sensor-profile"
+}

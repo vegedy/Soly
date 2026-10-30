@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:soly:contracts:v1:raw-event",
+  "title": "Soly v1 raw measurement (legacy, change or snapshot)",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "state": {
+          "type": "string"
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(?:\\.\\d{1,6})?(?:Z|[+-]\\d{2}:\\d{2})$",
+          "not": {
+            "anyOf": [
+              {
+                "pattern": "-00:00$"
+              },
+              {
+                "pattern": "\\s"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "entity_id",
+        "state",
+        "ts"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "state": {
+          "type": "string"
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(?:\\.\\d{1,6})?(?:Z|[+-]\\d{2}:\\d{2})$",
+          "not": {
+            "anyOf": [
+              {
+                "pattern": "-00:00$"
+              },
+              {
+                "pattern": "\\s"
+              }
+            ]
+          }
+        },
+        "measurement_kind": {
+          "const": "change"
+        }
+      },
+      "required": [
+        "entity_id",
+        "state",
+        "ts",
+        "measurement_kind"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\S+$",
+          "not": {
+            "pattern": "\\s"
+          }
+        },
+        "state": {
+          "type": "string"
+        },
+        "ts": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(?:\\.\\d{1,6})?(?:Z|[+-]\\d{2}:\\d{2})$",
+          "not": {
+            "anyOf": [
+              {
+                "pattern": "-00:00$"
+              },
+              {
+                "pattern": "\\s"
+              }
+            ]
+          }
+        },
+        "measurement_kind": {
+          "const": "snapshot"
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(?:\\.\\d{1,6})?(?:Z|[+-]\\d{2}:\\d{2})$",
+          "not": {
+            "anyOf": [
+              {
+                "pattern": "-00:00$"
+              },
+              {
+                "pattern": "\\s"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "entity_id",
+        "state",
+        "ts",
+        "measurement_kind",
+        "valid_from"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}
