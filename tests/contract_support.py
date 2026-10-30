@@ -155,7 +155,9 @@ def enrich(
     return {"key": key, "payload": payload}
 
 
-def transitions(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def transitions(
+    events: list[dict[str, Any]], *, finalized_before: str | None = None
+) -> list[dict[str, Any]]:
     """Set-based oracle for open event-time groups, not a stream processor."""
     groups: dict[tuple[str, str, str], set[str]] = defaultdict(set)
     for event in events:
@@ -163,6 +165,10 @@ def transitions(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
         if event["event_type"] == "tick":
             continue
         effective = event.get("valid_from", event["ts"])
+        if finalized_before is not None and instant(effective) < instant(
+            finalized_before
+        ):
+            continue
         groups[
             (canonical(effective), event["installation_id"], event["entity_id"])
         ].add(event["state"])

@@ -190,6 +190,16 @@ def test_wire_json_is_strict_and_key_is_required() -> None:
         check_message(b"demo_001", b"[]")
 
 
+def test_events_before_finalized_boundary_do_not_rewrite_history() -> None:
+    event = next(row["event"] for row in CASES if row["name"] == "measurement")
+    closed = dict(event, ts="2026-10-06T11:00:00.000000Z", state="1")
+    late_conflict = dict(closed, state="2")
+    boundary = dict(event, ts="2026-10-06T11:00:10.000000Z", state="3")
+    assert transitions(
+        [late_conflict, boundary, closed], finalized_before=boundary["ts"]
+    ) == transitions([boundary])
+
+
 def test_tick_drain_closes_only_complete_evaluation_windows() -> None:
     fixture = load(CONTRACT / "examples/replay-drain.json")
     start = instant(fixture["evaluation_start"])
