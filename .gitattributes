@@ -1,0 +1,9 @@
+* text=auto
+*.sh text eol=lf
+*.ps1 text eol=lf
+*.py text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+# Contract copies and provenance hashes require identical bytes on every OS.
+contracts/** -text

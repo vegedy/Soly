@@ -19,10 +19,10 @@
 - Laufzeiten, Hash-Locks und Image-Digests bewusst ändern, Gründe dokumentieren
   und betroffene Installationen/Builds erneut prüfen. Keine Secrets oder privaten
   Rohdaten einchecken. Zukunftspläne nicht als implementiertes Verhalten ausgeben.
-- Hauptrepo-Prüfungen nach Einrichtung gemäß CONTRIBUTING.md:
-  `python -m pip check`, `python -m pytest`, `python -m ruff check .`,
-  `python -m ruff format --check .`, `python -m mypy tests`.
-  Zusätzlich mit initialisierten Submodulen und vollständiger Hauptrepo-Historie:
-  `python -m pytest -m service_copies`.
-  Service-Prüfungen jeweils im Service-Verzeichnis ausführen. Tatsächliche
-  Ergebnisse und fehlende Prüfungen im PR nennen.
+- Einrichtung und Prüfungen über `./dev.sh setup`, `./dev.sh check` und
+  `./dev.sh check-integration`; unter PowerShell dieselben Befehle über `dev.ps1`.
+  Kein Aktivieren der `.venv` nötig. `format` schreibt ausdrücklich Änderungen.
+  `check` prüft pip, pytest, Ruff und mypy für `tests scripts`; die Integration
+  benötigt initialisierte Submodule und vollständige Hauptrepo-Historie.
+  Service-Prüfungen im jeweiligen Service ausführen. CI verwendet dieselben
+  Einstiege mit `--use-current-python`. Tatsächliche Ergebnisse dokumentieren.
