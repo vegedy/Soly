@@ -57,17 +57,21 @@ Verzeichnisse und den expliziten Python-Einstieg.
 ## Plattformen und CI
 
 Die CI nutzt dieselben Einstiege mit `--use-current-python` und erzeugt keine
-zusätzliche `.venv`. Hauptrepo, Simulator und Ingestion besitzen Ubuntu-24.04-
-und Windows-2025-Jobs, mit Checkout-Pfaden mit Leerzeichen und den jeweiligen
-Unix-/PowerShell-Einstiegen. Processing bleibt auf Ubuntu 24.04 mit Java 17.
-Docker-Jobs laufen weiterhin nur nach Push auf `main` und erfolgreichen Checks.
+zusätzliche `.venv`. Alle vier Repositories prüfen Unix und PowerShell 7 unter
+Ubuntu 24.04; Hauptrepo, Simulator und Ingestion verwenden Checkout-Pfade mit
+Leerzeichen. Processing verwendet zusätzlich Java 17. Docker-Jobs laufen weiter
+nur nach Push auf `main` und erfolgreichen Checks.
 
-Die lokale Ausführung von PowerShell 7 unter Linux belegt weder natives Windows
-noch Windows PowerShell 5.1 oder macOS. Für native Windows-Prüfungen gelten die
-Actions-Ergebnisse des jeweils gepushten Commits. Windows PowerShell 5.1 und
-macOS wurden lokal nicht ausgeführt. Processing lehnt native Windows-/macOS-
-Entwicklung ab; unter Windows ist WSL2 mit Linux-Checkout oder der vorhandene
-Linux-Container der beschriebene Weg. WSL2 selbst wurde lokal nicht ausgeführt.
+Ein nativer Windows-2025-Lauf wurde versucht. `actions/setup-python` konnte
+Python **3.12.15** dort nicht bereitstellen, bevor die Projektbefehle starteten
+([Simulator-Nachweis](https://github.com/vegedy/Soly-Simulator/actions/runs/41679598644)).
+Die endgültige CI prüft PowerShell deshalb unter Linux, ohne Laufzeitpins oder
+Locks für Windows zu ändern. Native Windows-Ausführung, Windows PowerShell 5.1
+und macOS sind nicht verifiziert. Für Hauptrepo, Simulator und Ingestion bleibt
+der native PowerShell-Einstieg mit selbst bereitgestelltem Python 3.12.15
+verfügbar; zunächst WSL2 mit einem Linux-Checkout verwenden. Processing lehnt
+native Windows-/macOS-Entwicklung ausdrücklich ab; dort WSL2 oder den vorhandenen
+Linux-Container nutzen. WSL2 selbst wurde lokal nicht ausgeführt.
 Keine Skripte umgehen PowerShell-Richtlinien oder ändern globale Konfiguration.
 
 ## Vorläufige Integration ohne Pull Requests

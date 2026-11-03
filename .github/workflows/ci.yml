@@ -10,15 +10,7 @@ permissions:
 
 jobs:
   contracts:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-24.04
-            entry: ./dev.sh
-          - os: windows-2025
-            entry: ./dev.ps1
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: checkout with spaces
@@ -30,9 +22,12 @@ jobs:
         with:
           python-version: '3.12.15'
       - name: Set up development dependencies
-        run: ${{ matrix.entry }} setup --use-current-python
-      - name: Check repository
-        run: ${{ matrix.entry }} check --use-current-python
+        run: ./dev.sh setup --use-current-python
+      - name: Check repository through Unix
+        run: ./dev.sh check --use-current-python
+      - name: Check repository through PowerShell
+        shell: pwsh
+        run: ./dev.ps1 check --use-current-python
 
   service-copies:
     needs: contracts

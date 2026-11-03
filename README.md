@@ -34,7 +34,7 @@ Im Repository unter Unix:
 ./dev.sh format
 ```
 
-Unter Windows PowerShell:
+Unter Windows PowerShell (mit vorhandenem Python 3.12.15):
 
 ```powershell
 .\dev.ps1 setup
@@ -71,6 +71,14 @@ $env:SOLY_PYTHON = 'C:\Pfad zu Python\python.exe'
 .\dev.ps1 setup
 ```
 
+
+**Windows-Weg:** Mit den bestehenden Pins zunächst **WSL2** und die Unix-Befehle
+in einem Linux-Checkout verwenden. `actions/setup-python` konnte Python 3.12.15
+auf Windows 2025 nicht bereitstellen. Der native PowerShell-Einstieg setzt einen
+selbst bereitgestellten Python-3.12.15-Interpreter voraus (`SOLY_PYTHON`); dieser
+native Installationsweg und Windows PowerShell 5.1 sind bislang nicht verifiziert.
+Es wird nicht automatisch auf eine andere Python-Version ausgewichen.
+
 Falls die lokale PowerShell-Richtlinie Skripte sperrt, die geltende Richtlinie
 prüfen oder den Python-Einstieg direkt aufrufen; die Skripte ändern keine
 Sicherheitseinstellungen und verwenden keinen Execution-Policy-Bypass:
@@ -99,8 +107,8 @@ Gesamtstand und die vollständige Hauptrepo-Historie:
 
 Ruff im Hauptrepo schließt die eigenständigen Service-Verzeichnisse aus;
 Service-Prüfungen werden im jeweiligen Service separat ausgeführt.
-Die CI prüft das Hauptrepo unter Ubuntu 24.04 (Unix) und Windows 2025
-(PowerShell), jeweils in einem Checkout-Pfad mit Leerzeichen. Der separate
+Die CI prüft das Hauptrepo unter Ubuntu 24.04 über Unix und PowerShell 7,
+jeweils in einem Checkout-Pfad mit Leerzeichen. Der separate
 Integrationsjob läuft unter Ubuntu mit vollständiger Historie und Submodulen.
 Tatsächlich ausgeführte lokale Tests und Plattformgrenzen: [Validierung](docs/development-validation.md).
 
