@@ -51,3 +51,18 @@ dagegen den gespeicherten Gesamtstand und muss anschließend geprüft werden:
 ```bash
 git submodule update --remote --recursive
 ```
+
+## Mitarbeit und Projektentscheidungen
+
+- [CONTRIBUTING.md](CONTRIBUTING.md): Repository-Aufbau, Einrichtung, Prüfungen und
+  vollständiger Weg vom zentralen Issue bis zum integrierten Service-Stand.
+- [AGENTS.md](AGENTS.md): kurze Arbeitsregeln für Coding-Agenten.
+- [Soly-Issue-und-Git-Workflow.md](Soly-Issue-und-Git-Workflow.md): SOLY-Namenskonventionen,
+  Service-PRs und Submodule-Integration; Review und Merge übernimmt der Nutzer.
+- [Soly-Technologieentscheidungen.md](Soly-Technologieentscheidungen.md): ursprüngliche
+  Versionswahl, inzwischen implementierte Locks/Container/CI und ausstehende Nachweise.
+
+Service-spezifische Einrichtung und Prüfungen stehen in den READMEs unter
+[simulator/](simulator/README.md), [ingestion/](ingestion/README.md) und
+[processing/](processing/README.md). Insbesondere Processing benötigt einen eigenen
+Installationsweg für PyFlink-Quellabhängigkeiten und Java 17.
