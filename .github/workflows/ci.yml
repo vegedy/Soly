@@ -15,10 +15,8 @@ jobs:
       matrix:
         include:
           - os: ubuntu-24.04
-            shell: bash
             entry: ./dev.sh
           - os: windows-2025
-            shell: pwsh
             entry: ./dev.ps1
     runs-on: ${{ matrix.os }}
     defaults:
@@ -32,10 +30,8 @@ jobs:
         with:
           python-version: '3.12.15'
       - name: Set up development dependencies
-        shell: ${{ matrix.shell }}
         run: ${{ matrix.entry }} setup --use-current-python
       - name: Check repository
-        shell: ${{ matrix.shell }}
         run: ${{ matrix.entry }} check --use-current-python
 
   service-copies:
