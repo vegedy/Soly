@@ -149,3 +149,8 @@ die Verfahren stehen in den Service-READMEs und im
 bewerten, kompatible Connectoren beibehalten. Secrets, private Rohdaten, `.venv`,
 Caches und generierte Artefakte gehören nicht in Commits. Fehlende oder gescheiterte
 Prüfungen ausdrücklich nennen; historische Nachweise nicht als neue Tests ausgeben.
+
+`check-integration` vergleicht auch die gemeinsamen Entwicklungsdateien der drei
+Services mit dem Hauptrepo. Nur die explizite `PROJECT`-Kennung in `scripts/dev.py`
+darf abweichen. Änderungen an gemeinsamen Wrappern, Ablaufsteuerung und Tests
+immer in allen Repositories übernehmen; die Services bleiben eigenständig nutzbar.

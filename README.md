@@ -49,7 +49,7 @@ Unter Windows PowerShell (mit vorhandenem Python 3.12.15):
 | `setup` | Erstellt oder verwendet `.venv`, installiert vorhandene Hash-Locks und prüft Abhängigkeiten. Erneut ausführbar; keine Lock-Neuauflösung. |
 | `check` | `pip check`, pytest, Ruff-Linting, Ruff-Formatprüfung und mypy einschließlich `scripts/`; stoppt beim ersten Fehler. |
 | `format` | Schreibt ausdrücklich Ruff-Formatänderungen in Projektdateien. |
-| `check-integration` | Prüft Service-Vertragskopien und Herkunft; benötigt initialisierte Submodule und vollständige Hauptrepo-Historie. |
+| `check-integration` | Prüft Service-Vertragskopien, Herkunft und gemeinsame Entwicklungsskripte; benötigt initialisierte Submodule und vollständige Hauptrepo-Historie. |
 
 `check` formatiert keine Dateien und legt Tool-Caches/Bytecode nicht im Checkout
 an. Externe Fehlercodes werden weitergegeben. Kein Befehl aktualisiert Submodule,
