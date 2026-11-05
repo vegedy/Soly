@@ -239,3 +239,45 @@ def test_docker_wrapper_ignores_broken_venv(
     )
     assert result.returncode == 23, result.stdout + result.stderr
     assert json.loads(result.stdout) == arguments
+
+
+@pytest.mark.parametrize("native_errors", [False, True])
+@pytest.mark.parametrize("exit_code", [0, 23])
+def test_powershell_preserves_exit_codes_and_caller_preference(
+    native_errors: bool,
+    exit_code: int,
+    tmp_path: Path,
+) -> None:
+    executable = shutil.which("pwsh")
+    if executable is None:
+        pytest.skip("pwsh is not installed")
+    repo = tmp_path / "checkout with spaces"
+    (repo / "scripts").mkdir(parents=True)
+    script = repo / "dev.ps1"
+    shutil.copyfile(dev.ROOT / script.name, script)
+    (repo / "scripts/dev.py").write_text(
+        f"raise SystemExit({exit_code})",
+        encoding="utf-8",
+    )
+    preference = "$true" if native_errors else "$false"
+    command = (
+        "$ErrorActionPreference = 'Stop'; "
+        f"$PSNativeCommandUseErrorActionPreference = {preference}; "
+        "& $env:SOLY_TEST_WRAPPER check; $code = $LASTEXITCODE; "
+        f"if ($PSNativeCommandUseErrorActionPreference -ne {preference}) "
+        "{ throw 'Wrapper changed caller preference' }; exit $code"
+    )
+    result = subprocess.run(
+        [executable, "-NoProfile", "-Command", command],
+        cwd=tmp_path,
+        env={
+            **os.environ,
+            "SOLY_PYTHON": sys.executable,
+            "SOLY_TEST_WRAPPER": str(script),
+        },
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == exit_code, result.stdout + result.stderr
+    assert "Cannot run Python" not in result.stderr

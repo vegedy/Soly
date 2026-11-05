@@ -1,5 +1,7 @@
 # No activation or execution-policy changes are needed by this script.
 $ErrorActionPreference = 'Stop'
+# Script-local: preserve Python exit codes even when the caller treats native errors as exceptions.
+$PSNativeCommandUseErrorActionPreference = $false
 $env:PYTHONDONTWRITEBYTECODE = '1'
 $dockerSmoke = $args -ccontains 'docker-smoke'
 $pythonArgs = @()
