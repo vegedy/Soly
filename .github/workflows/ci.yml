@@ -44,3 +44,36 @@ jobs:
         run: ./dev.sh setup --use-current-python
       - name: Verify integrated service copies and provenance
         run: ./dev.sh check-integration --use-current-python
+
+  local-setup:
+    runs-on: ubuntu-24.04
+    env:
+      REPO_DIR: ${{ github.workspace }}/checkout with spaces
+    defaults:
+      run:
+        working-directory: /tmp
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          path: checkout with spaces
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.15'
+      - name: Create a fresh local environment through Unix
+        run: |
+          test ! -e "$REPO_DIR/.venv"
+          "$REPO_DIR/dev.sh" setup
+          touch "$REPO_DIR/.venv/reuse-probe"
+      - name: Repeat setup through PowerShell and preserve the environment
+        shell: pwsh
+        run: |
+          & "$env:REPO_DIR/dev.ps1" setup
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (-not (Test-Path -LiteralPath "$env:REPO_DIR/.venv/reuse-probe")) {
+            throw 'Repeated setup replaced the existing environment'
+          }
+      - name: Check the local environment through Unix
+        run: '"$REPO_DIR/dev.sh" check'
+      - name: Check the local environment through PowerShell
+        shell: pwsh
+        run: '& "$env:REPO_DIR/dev.ps1" check'

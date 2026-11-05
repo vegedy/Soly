@@ -148,3 +148,8 @@ Service-spezifische Einrichtung und Prüfungen stehen in den READMEs unter
 [simulator/](simulator/README.md), [ingestion/](ingestion/README.md) und
 [processing/](processing/README.md). Insbesondere Processing benötigt einen eigenen
 Installationsweg für PyFlink-Quellabhängigkeiten und Java 17.
+
+Die CI prüft zusätzlich den lokalen Setup-Weg in einem frischen Checkout mit
+Leerzeichen: Unix-Setup, erneutes PowerShell-Setup mit Erhalt der bestehenden
+`.venv`, danach `check` über beide Einstiege ohne `--use-current-python`.
+Alle Aufrufe dieses Jobs erfolgen außerhalb des Checkout-Verzeichnisses.
