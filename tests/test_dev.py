@@ -188,7 +188,19 @@ def test_wrappers_handle_spaces_arguments_and_exit_codes(
 
 
 @pytest.mark.parametrize("shell", ["sh", "pwsh"])
-def test_docker_wrapper_ignores_broken_venv(shell: str, tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        ["docker-smoke"],
+        ["docker-smoke", "--use-current-python"],
+        ["--use-current-python", "docker-smoke"],
+    ],
+)
+def test_docker_wrapper_ignores_broken_venv(
+    shell: str,
+    arguments: list[str],
+    tmp_path: Path,
+) -> None:
     if os.name == "nt":
         pytest.skip("The executable test shim requires Unix")
     executable = shutil.which(shell)
@@ -218,7 +230,7 @@ def test_docker_wrapper_ignores_broken_venv(shell: str, tmp_path: Path) -> None:
     if shell == "pwsh":
         command += ["-NoProfile", "-File"]
     result = subprocess.run(
-        [*command, str(script), "docker-smoke"],
+        [*command, str(script), *arguments],
         cwd=tmp_path,
         env=env,
         capture_output=True,
@@ -226,4 +238,4 @@ def test_docker_wrapper_ignores_broken_venv(shell: str, tmp_path: Path) -> None:
         check=False,
     )
     assert result.returncode == 23, result.stdout + result.stderr
-    assert json.loads(result.stdout) == ["docker-smoke"]
+    assert json.loads(result.stdout) == arguments

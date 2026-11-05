@@ -3,9 +3,16 @@ set -eu
 
 repo_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 export PYTHONDONTWRITEBYTECODE=1
+docker_smoke=false
+for argument in "$@"; do
+    if [ "$argument" = docker-smoke ]; then
+        docker_smoke=true
+        break
+    fi
+done
 if [ -n "${SOLY_PYTHON:-}" ]; then
     python=$SOLY_PYTHON
-elif [ "${1:-}" != docker-smoke ] && [ -x "$repo_dir/.venv/bin/python" ]; then
+elif [ "$docker_smoke" = false ] && [ -x "$repo_dir/.venv/bin/python" ]; then
     python=$repo_dir/.venv/bin/python
 else
     python=''

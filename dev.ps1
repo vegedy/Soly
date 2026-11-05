@@ -1,7 +1,7 @@
 # No activation or execution-policy changes are needed by this script.
 $ErrorActionPreference = 'Stop'
 $env:PYTHONDONTWRITEBYTECODE = '1'
-$dockerSmoke = $args.Count -gt 0 -and $args[0] -eq 'docker-smoke'
+$dockerSmoke = $args -ccontains 'docker-smoke'
 $pythonArgs = @()
 if ($env:SOLY_PYTHON) {
     $python = $env:SOLY_PYTHON
