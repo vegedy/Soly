@@ -1,12 +1,13 @@
 # No activation or execution-policy changes are needed by this script.
 $ErrorActionPreference = 'Stop'
 $env:PYTHONDONTWRITEBYTECODE = '1'
+$dockerSmoke = $args.Count -gt 0 -and $args[0] -eq 'docker-smoke'
 $pythonArgs = @()
 if ($env:SOLY_PYTHON) {
     $python = $env:SOLY_PYTHON
-} elseif (Test-Path -LiteralPath (Join-Path $PSScriptRoot '.venv/Scripts/python.exe')) {
+} elseif (-not $dockerSmoke -and (Test-Path -LiteralPath (Join-Path $PSScriptRoot '.venv/Scripts/python.exe'))) {
     $python = Join-Path $PSScriptRoot '.venv/Scripts/python.exe'
-} elseif (Test-Path -LiteralPath (Join-Path $PSScriptRoot '.venv/bin/python')) {
+} elseif (-not $dockerSmoke -and (Test-Path -LiteralPath (Join-Path $PSScriptRoot '.venv/bin/python'))) {
     $python = Join-Path $PSScriptRoot '.venv/bin/python'
 } elseif (Get-Command py -CommandType Application -ErrorAction SilentlyContinue) {
     $python = 'py'

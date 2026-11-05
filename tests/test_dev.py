@@ -185,3 +185,45 @@ def test_wrappers_handle_spaces_arguments_and_exit_codes(
     )
     assert result.returncode == 23, result.stdout + result.stderr
     assert json.loads(result.stdout) == ["argument with spaces", "--use-current-python"]
+
+
+@pytest.mark.parametrize("shell", ["sh", "pwsh"])
+def test_docker_wrapper_ignores_broken_venv(shell: str, tmp_path: Path) -> None:
+    if os.name == "nt":
+        pytest.skip("The executable test shim requires Unix")
+    executable = shutil.which(shell)
+    if executable is None:
+        pytest.skip(f"{shell} is not installed")
+    repo = tmp_path / "checkout with spaces"
+    (repo / "scripts").mkdir(parents=True)
+    extension = "sh" if shell == "sh" else "ps1"
+    script = repo / f"dev.{extension}"
+    shutil.copyfile(dev.ROOT / script.name, script)
+    (repo / "scripts/dev.py").write_text(
+        "import json, sys; print(json.dumps(sys.argv[1:])); sys.exit(23)",
+        encoding="utf-8",
+    )
+    # Cover both venv locations selected by PowerShell on Unix.
+    for relative in (".venv/bin/python", ".venv/Scripts/python.exe"):
+        broken = repo / relative
+        broken.parent.mkdir(parents=True, exist_ok=True)
+        broken.write_text("#!/bin/sh\nexit 71\n", encoding="utf-8")
+        broken.chmod(0o755)
+    host = tmp_path / "host bin"
+    host.mkdir()
+    (host / "python3.12").symlink_to(sys.executable)
+    env = {**os.environ, "PATH": str(host) + os.pathsep + os.environ["PATH"]}
+    env.pop("SOLY_PYTHON", None)
+    command = [executable]
+    if shell == "pwsh":
+        command += ["-NoProfile", "-File"]
+    result = subprocess.run(
+        [*command, str(script), "docker-smoke"],
+        cwd=tmp_path,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 23, result.stdout + result.stderr
+    assert json.loads(result.stdout) == ["docker-smoke"]
