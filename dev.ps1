@@ -21,7 +21,7 @@ if ($env:SOLY_PYTHON) {
 } elseif (Get-Command python -CommandType Application -ErrorAction SilentlyContinue) {
     $python = 'python'
 } else {
-    [Console]::Error.WriteLine('Python is missing. Install Python 3.12.15; set SOLY_PYTHON to its executable path.')
+    [Console]::Error.WriteLine('Python is missing. Install Python 3.12.x; set SOLY_PYTHON to its executable path.')
     exit 1
 }
 try {

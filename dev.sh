@@ -24,7 +24,7 @@ else
     done
 fi
 if [ -z "$python" ] || ! command -v "$python" >/dev/null 2>&1; then
-    echo 'Python is missing. Install Python 3.12.15; set SOLY_PYTHON to its executable path.' >&2
+    echo 'Python is missing. Install Python 3.12.x; set SOLY_PYTHON to its executable path.' >&2
     exit 1
 fi
 exec "$python" "$repo_dir/scripts/dev.py" "$@"

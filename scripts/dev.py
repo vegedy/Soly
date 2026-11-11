@@ -13,14 +13,15 @@ from pathlib import Path
 
 if sys.version_info < (3, 10):  # noqa: UP036 - bootstrap must explain old interpreters
     print(
-        "Python 3.12.15 is required; set SOLY_PYTHON to its executable path.",
+        "Python 3.12.x is required; set SOLY_PYTHON to its executable path.",
         file=sys.stderr,
     )
     sys.exit(1)
 
 PROJECT = "soly"
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = (3, 12, 15)
+VERSION = (3, 12)
+CI_VERSION = (3, 12, 15)
 PROCESSING = PROJECT == "soly-processing"
 SERVICE = PROJECT != "soly"
 
@@ -35,10 +36,15 @@ def run(command: list[str], *, env: dict[str, str] | None = None) -> None:
 
 
 def require_version() -> None:
-    if sys.version_info[:3] != VERSION:
+    if sys.version_info[:2] != VERSION:
         raise DevError(
-            f"Python 3.12.15 is required; got {platform.python_version()}. "
-            "Install that version and set SOLY_PYTHON to its executable path."
+            f"Python 3.12.x is required; got {platform.python_version()}. "
+            "Install Python 3.12 and set SOLY_PYTHON to its executable path."
+        )
+    if os.environ.get("CI") == "true" and sys.version_info[:3] != CI_VERSION:
+        raise DevError(
+            f"CI requires Python 3.12.15; got {platform.python_version()}. "
+            "Use the pinned CI interpreter."
         )
 
 
@@ -84,7 +90,7 @@ def validate_venv(python: Path) -> None:
             str(python),
             "-I",
             "-c",
-            "import sys; sys.exit(0 if sys.version_info[:3] == (3, 12, 15) "
+            "import sys; sys.exit(0 if sys.version_info[:2] == (3, 12) "
             "and sys.prefix != sys.base_prefix else 1)",
         ],
         cwd=ROOT,
@@ -92,7 +98,7 @@ def validate_venv(python: Path) -> None:
     )
     if result.returncode:
         raise DevError(
-            ".venv must use Python 3.12.15 without global site packages. "
+            ".venv must use Python 3.12.x without global site packages. "
             "Inspect it before moving it aside; run setup with SOLY_PYTHON set."
         )
     config = (ROOT / ".venv/pyvenv.cfg").read_text(encoding="utf-8").lower()

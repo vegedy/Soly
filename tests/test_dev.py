@@ -44,6 +44,54 @@ def test_wrong_version_is_actionable(monkeypatch: pytest.MonkeyPatch) -> None:
         dev.require_version()
 
 
+@pytest.mark.parametrize("version", [(3, 12, 0), (3, 12, 10), (3, 12, 15), (3, 12, 16)])
+def test_local_python_3_12_patches_are_supported(
+    version: tuple[int, int, int], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.delenv("CI", raising=False)
+    monkeypatch.setattr(sys, "version_info", version)
+    dev.require_version()
+
+
+@pytest.mark.parametrize("version", [(3, 12, 10), (3, 12, 16)])
+def test_ci_requires_pinned_patch(
+    version: tuple[int, int, int], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("CI", "true")
+    monkeypatch.setattr(sys, "version_info", version)
+    with pytest.raises(dev.DevError, match="CI requires Python 3.12.15"):
+        dev.require_version()
+
+
+def test_ci_accepts_pinned_patch(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("CI", "true")
+    monkeypatch.setattr(sys, "version_info", (3, 12, 15))
+    dev.require_version()
+
+
+def test_venv_accepts_any_python_3_12_patch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(dev, "ROOT", tmp_path)
+    python = tmp_path / ".venv" / (
+        "Scripts/python.exe" if os.name == "nt" else "bin/python"
+    )
+    python.parent.mkdir(parents=True)
+    python.touch()
+    (tmp_path / ".venv/pyvenv.cfg").write_text(
+        "include-system-site-packages = false\n", encoding="utf-8"
+    )
+    commands: list[list[str]] = []
+
+    def fake_run(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        commands.append(command)
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(dev.subprocess, "run", fake_run)
+    dev.validate_venv(python)
+    assert "sys.version_info[:2] == (3, 12)" in commands[0][-1]
+
+
 def test_setup_preserves_incomplete_directory(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

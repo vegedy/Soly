@@ -15,9 +15,11 @@ Die Service-Implementierungen folgen in eigenen Issues.
 
 ## Entwicklungsbefehle
 
-Voraussetzung: **Python 3.12.15**. `dev.sh` (POSIX-Shell unter Unix) und `dev.ps1`
+Voraussetzung für lokale Entwicklung: **Python 3.12.x** (z. B. 3.12.10). `dev.sh` (POSIX-Shell unter Unix) und `dev.ps1`
 (Windows PowerShell 5.1 oder PowerShell 7) delegieren an `scripts/dev.py` mit
-Python-Standardbibliothek. Jeder Checkout besitzt eine eigene `.venv`; Aktivierung
+Python-Standardbibliothek. Lokal sind alle 3.12-Patchversionen zugelassen.
+**CI und Docker bleiben auf Python 3.12.15 festgelegt**; Locks und Image-Pins
+werden nicht verändert. Jeder Checkout besitzt eine eigene `.venv`; Aktivierung
 ist unnötig. Die Befehle bestimmen den Repository-Pfad selbst. Auch ein Aufruf aus
 einem anderen Verzeichnis oder ein Checkout-Pfad mit Leerzeichen funktioniert:
 
@@ -34,7 +36,7 @@ Im Repository unter Unix:
 ./dev.sh format
 ```
 
-Unter Windows PowerShell (mit vorhandenem Python 3.12.15):
+Unter Windows PowerShell (mit Python 3.12.x):
 
 ```powershell
 .\dev.ps1 setup
@@ -72,12 +74,13 @@ $env:SOLY_PYTHON = 'C:\Pfad zu Python\python.exe'
 ```
 
 
-**Windows-Weg:** Mit den bestehenden Pins zunächst **WSL2** und die Unix-Befehle
-in einem Linux-Checkout verwenden. `actions/setup-python` konnte Python 3.12.15
-auf Windows 2025 nicht bereitstellen. Der native PowerShell-Einstieg setzt einen
-selbst bereitgestellten Python-3.12.15-Interpreter voraus (`SOLY_PYTHON`); dieser
-native Installationsweg und Windows PowerShell 5.1 sind bislang nicht verifiziert.
-Es wird nicht automatisch auf eine andere Python-Version ausgewichen.
+**Windows-Weg:** Für Hauptrepo, Simulator und Ingestion ist lokal Python
+3.12.x vorgesehen (z. B. 3.12.10). `dev.ps1` verwendet automatisch `py -3.12`,
+sofern weder `SOLY_PYTHON` noch eine vorhandene `.venv` Vorrang haben. Version
+prüfen: `py -3.12 --version`. `SOLY_PYTHON` bleibt als Override erhalten.
+Native Windows-Ausführung einschließlich Windows PowerShell 5.1 wurde noch nicht
+vollständig getestet. Processing benötigt weiterhin WSL2 oder Linux-Container,
+da natives Windows-PyFlink nicht unterstützt wird.
 
 Falls die lokale PowerShell-Richtlinie Skripte sperrt, die geltende Richtlinie
 prüfen oder den Python-Einstieg direkt aufrufen; die Skripte ändern keine
