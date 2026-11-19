@@ -135,6 +135,8 @@ Volume **`/var/lib/postgresql`** und darin `18/docker`; der frühere Mountpunkt
 Datenvolumes. Ein Startfehler führt ebenfalls zu keiner automatischen
 Datenlöschung. Bestehende PostgreSQL-Volumes behalten ihre initialisierten
 Benutzer und Passwörter; eine Änderung der Env-Datei migriert diese nicht.
+Kafkas erzeugte Konfigurationsdateien liegen im flüchtigen Speicher; dadurch
+sammeln sich bei normalen Stop-/Startzyklen keine anonymen Konfigurationsvolumes an.
 
 **Reset löscht die Daten dieses Projekts ausdrücklich:**
 

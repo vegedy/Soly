@@ -47,6 +47,11 @@ services:
       KAFKA_HEAP_OPTS: ${SOLY_KAFKA_HEAP:--Xms512m -Xmx512m}
     volumes:
       - kafka-data:/var/lib/kafka/data
+    # Override the image's ephemeral config/secrets VOLUMEs: no anonymous volumes
+    # should accumulate across normal down/up cycles.
+    tmpfs:
+      - /mnt/shared/config:mode=1777,size=16m
+      - /etc/kafka/secrets:mode=1777,size=1m
     healthcheck:
       test: [CMD, /opt/kafka/bin/kafka-topics.sh, --bootstrap-server, kafka:19092, --list]
       interval: 10s
