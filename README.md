@@ -55,8 +55,10 @@ Unter Windows PowerShell (mit Python 3.12.x):
 | `check-integration` | Prüft Service-Vertragskopien, Herkunft und gemeinsame Entwicklungsskripte; benötigt initialisierte Submodule und vollständige Hauptrepo-Historie. |
 
 `check` formatiert keine Dateien und legt Tool-Caches/Bytecode nicht im Checkout
-an. Externe Fehlercodes werden weitergegeben. Kein Befehl aktualisiert Submodule,
-löscht lokale Daten oder verändert globale Systemeinstellungen.
+an. Externe Fehlercodes werden weitergegeben. Diese Python-Prüfbefehle
+aktualisieren keine Submodule, löschen keine lokalen Daten und verändern keine
+globalen Systemeinstellungen. Der separate `stack-reset --yes` löscht ausdrücklich
+die Datenvolumes des ausgewählten lokalen Infrastrukturprojekts.
 
 Interpreterwahl: `SOLY_PYTHON` (ein vollständiger Dateipfad, keine zusätzlichen
 Argumente), vorhandene `.venv`, dann `python3.12`/`python3`/`python` unter Unix;
@@ -115,6 +117,32 @@ Die CI prüft das Hauptrepo unter Ubuntu 24.04 über Unix und PowerShell 7,
 jeweils in einem Checkout-Pfad mit Leerzeichen. Der separate
 Integrationsjob läuft unter Ubuntu mit vollständiger Historie und Submodulen.
 Tatsächlich ausgeführte lokale Tests und Plattformgrenzen: [Validierung](docs/development-validation.md).
+
+## Lokaler Infrastruktur-Stack
+
+Kafka, PostgreSQL sowie Flink JobManager und TaskManager starten über dieselben
+Entwicklungseinstiege. Voraussetzung sind Docker mit Linux-amd64-Containern und
+das Compose-Plugin; Java, PyFlink und eine lokale `.venv` werden hierfür nicht benötigt.
+
+```bash
+cp .env.example .env
+./dev.sh stack-up
+./dev.sh stack-status
+./dev.sh stack-smoke
+./dev.sh stack-down
+```
+
+Unter Windows PowerShell `Copy-Item .env.example .env` und `dev.ps1` verwenden;
+bei Docker ausschließlich in WSL2 die Unix-Befehle dort ausführen.
+`stack-up` baut das vorhandene Processing-Image mit Cache und verwendet dieselbe
+Image-ID für beide Flink-Rollen. `stack-down` erhält die Datenvolumes.
+Nur `stack-reset --yes` löscht diese ausdrücklich.
+
+[Anleitung und Konfiguration](docs/local-infrastructure.md) beschreiben frischen
+Checkout, localhost-Adressen, Ports, Bereitschaftsprüfungen, Datenerhalt, Reset
+und Ressourcenbedarf. [Prüfnachweise](docs/infrastructure-validation.md) halten
+die tatsächlich getesteten Umgebungen fest. Der Stack enthält noch keinen
+fachlichen Verarbeitungsjob und keine Anwendungs-Ergebnistabellen.
 
 ## Submodules
 

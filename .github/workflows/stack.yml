@@ -1,0 +1,70 @@
+name: Local infrastructure
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stack:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      COMPOSE_PROJECT_NAME: soly19-validation-ci-${{ github.run_id }}-${{ github.run_attempt }}
+      SOLY_KAFKA_PORT: '19092'
+      SOLY_POSTGRES_PORT: '15432'
+      SOLY_FLINK_PORT: '18081'
+      PYTHONDONTWRITEBYTECODE: '1'
+    defaults:
+      run:
+        working-directory: checkout with spaces
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          path: checkout with spaces
+          submodules: recursive
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.15'
+      - name: Record tools and validate Compose
+        run: |
+          mkdir -p "$RUNNER_TEMP/soly-stack"
+          docker version > "$RUNNER_TEMP/soly-stack/tools.log"
+          docker compose version >> "$RUNNER_TEMP/soly-stack/tools.log"
+          docker compose --env-file .env.example --profile tools config --quiet
+          ./dev.sh stack-reset --help
+      - name: Build and validate fresh stack, persistence and isolated reset
+        run: |
+          set -o pipefail
+          python -m scripts.validate_stack --project-name "$COMPOSE_PROJECT_NAME" \
+            2>&1 | tee "$RUNNER_TEMP/soly-stack/acceptance.log"
+      - name: Check PowerShell dispatch and preserve reset safeguard
+        shell: pwsh
+        run: |
+          & ./dev.ps1 stack-status --help
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & ./dev.ps1 stack-reset --env-file .env.example
+          if ($LASTEXITCODE -ne 2) { throw 'Reset must require --yes' }
+          exit 0
+      - name: Collect diagnostics
+        if: always()
+        run: |
+          docker compose --env-file .env.example --profile tools ps --all \
+            > "$RUNNER_TEMP/soly-stack/final-status.log" 2>&1 || true
+          docker compose --env-file .env.example --profile tools logs --no-color --tail 100 \
+            > "$RUNNER_TEMP/soly-stack/final-containers.log" 2>&1 || true
+      - name: Remove only this CI project's resources
+        if: always()
+        run: ./dev.sh stack-reset --env-file .env.example --yes
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: local-infrastructure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/soly-stack/
+          retention-days: 7

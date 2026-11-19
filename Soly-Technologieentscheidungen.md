@@ -105,8 +105,11 @@ den Flink-Digest, einen geprüften Python-Quellhash und einen datierten
 Ubuntu-Paketsnapshot. Konkrete Digests und der historische JVM-Nachweis stehen in
 den Service-READMEs, damit diese Werte nicht an mehreren Stellen gepflegt werden.
 JobManager und TaskManager verwenden dasselbe Processing-Image und den expliziten
-Python-Interpreter. Kafka und PostgreSQL sind weiterhin ausgewählte Zielstände;
-ihre Infrastruktur und Digests sind noch nicht im Hauptrepo eingerichtet.
+Python-Interpreter. SOLY-19 ergänzt Kafka und PostgreSQL im lokalen Compose-Stack
+mit fixierten linux/amd64-Manifest-Digests. Adressen, Volumes, Entwicklungsbefehle
+und die tatsächlich verwendeten Digests stehen in der
+[Stack-Anleitung](docs/local-infrastructure.md); tatsächliche Infrastruktur-
+Nachweise werden [separat protokolliert](docs/infrastructure-validation.md).
 Ein Versions-Tag allein fixiert nicht alle Betriebssystempakete oder JVM-Patches.
 
 Quellen:
@@ -168,11 +171,11 @@ Umgebung, keine im Rahmen von SOLY-17 erneut ausgeführten Builds:
 | Simulator / Ingestion | Python-Basisimage per Digest, Hash-Locks, installierbares Paket und Container-Smoke-Test; Python-Version und Imports dokumentiert | keine Ereignisgenerierung, Adapter oder Broker-Verbindung |
 | Processing | gemeinsames Rollenimage, Python-Quellbuild, PyFlink/Java, Connector-Lock, Klassenlade- und Table-Planungs-Smoke-Test | kein eingereichter fachlicher Job oder Datenbank-Schreibnachweis |
 | Vertrag | zentrale v1-Spezifikation, Schemata/Beispiele, lokale Service-Kopien mit Commit und Hashes, Vertrags-/Herkunftsprüfungen | keine implementierte fachliche Pipeline |
-| Kafka / PostgreSQL | Versionen ausgewählt, Client-/Connector-Artefakte gelockt | noch kein Gesamt-Compose, Broker-/DB-Start oder Ende-zu-Ende-Test |
+| Kafka / PostgreSQL / Flink-Cluster | SOLY-19: lokales Compose, Digest-Pins, Healthchecks, Topic-Initialisierung und Infrastruktur-Smoke-Test; Nachweise im Infrastrukturprotokoll | noch kein fachlicher Ende-zu-Ende-Test oder Checkpoint-Recovery-Nachweis |
 
 Noch ausstehend sind insbesondere:
 
-1. Kafka-/PostgreSQL-Basisimages beziehen, Digests erfassen und Gesamt-Setup bauen.
+1. Infrastruktur-Nachweise bei Versionsänderungen erneut ausführen; aktuelle Ergebnisse stehen im [Infrastrukturprotokoll](docs/infrastructure-validation.md).
 2. Bekannte Daten über JSONL/Ingestion → Kafka → PyFlink → PostgreSQL verarbeiten.
 3. Erwartete Ergebnisse und idempotenten UPSERT tatsächlich prüfen.
 4. Fachliche Event-Time-/Qualitätsfälle, Wiederherstellung nach Ausfällen,
@@ -189,8 +192,7 @@ Versionsänderungen erfolgen bewusst und nachvollziehbar. Bei Änderungen an Fli
 
 Noch nicht durch dieses Dokument festgelegt sind insbesondere:
 
-- Konkrete Docker-Engine- und Compose-Plugin-Version auf Entwicklungs- und CI-Rechnern.
-- Kafka-/PostgreSQL-Image-Digests für das kommende Gesamt-Setup.
+- Weitere Docker-/Compose- und Plattformstände außerhalb der im Infrastrukturprotokoll geprüften Umgebung.
 - Plattform-Lockstände außerhalb der bisher geprüften Umgebungen.
 - Weitere Bibliotheken, etwa für Home-Assistant-WebSocket-Zugriff und Konfigurationsvalidierung.
 - Die fachliche Sink-Implementierung auf Basis der bereits gewählten JDBC-Table-API und gelockten Abhängigkeiten.
