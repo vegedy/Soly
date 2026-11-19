@@ -3,7 +3,9 @@
 - **Entscheidungsdatum:** 23. Oktober 2026
 - **Geltungsbereich:** Technischer Ausgangsstand für Phase 2 des Data-Engineering-Projekts
 - **Repository-Abgleich:** 2. November 2026 (SOLY-17)
-- **Status:** Historische Auswahl vom 23. Oktober mit inzwischen implementierten Service-Fundamenten abgeglichen. Service-Builds und Laufzeit-Smoke-Tests sind in den Service-READMEs historisch dokumentiert; der vollständige fachliche Pipeline-Test steht aus. Der Abgleich ist kein erneuter Build- oder Kompatibilitätsnachweis.
+- **Entwicklungsbefehle:** Unter Linux und Windows geprüft am 19. November 2026
+  (SOLY-18); Umgebungen und Ergebnisse im [Prüfprotokoll](docs/development-validation.md).
+- **Status:** Historische Auswahl vom 23. Oktober mit inzwischen implementierten Service-Fundamenten abgeglichen. Die Service-READMEs und das SOLY-18-Prüfprotokoll dokumentieren konkrete Testumgebungen und Nachweise. Die Versionsbegründungen beziehen sich auf den Auswahlzeitpunkt; der vollständige fachliche Pipeline-Test steht aus.
 
 Maßgebliche Implementierung: [Simulator-README](simulator/README.md),
 [Ingestion-README](ingestion/README.md), [Processing-README](processing/README.md),
@@ -28,7 +30,8 @@ Es gelten folgende Grundsätze:
 
 1. Flink und PyFlink verwenden dieselbe Version.
 2. Die Connectoren werden für die gewählte Flink-Versionslinie ausgewählt.
-3. Alle eigenen Python-Komponenten verwenden dieselbe Python-Version.
+3. Alle eigenen Python-Komponenten verwenden Python 3.12; CI und Container
+   sind einheitlich auf 3.12.15 festgelegt, lokal sind 3.12-Patchstände zugelassen.
 4. JobManager und TaskManager verwenden dasselbe eigene Processing-Image.
 5. Abhängigkeiten und Container werden reproduzierbar festgeschrieben.
 6. Dokumentierte Kompatibilität ersetzt keinen praktischen Integrationstest.
@@ -37,7 +40,7 @@ Es gelten folgende Grundsätze:
 
 | Komponente | Entscheidung | Einsatz und Begründung |
 |---|---|---|
-| Python | **3.12.15** | Einheitliche Version für Simulator, Ingestion und Processing. Python 3.12 wird von PyFlink 2.2.1 unterstützt. Ein gemeinsamer Stand vereinfacht lokale Entwicklung, CI und Container-Builds. |
+| Python | **3.12.15** in CI und Containern; lokal **3.12.x** | Einheitliche Versionslinie für Simulator, Ingestion und Processing. Lokale Patchstände werden durch Einstiegsskripte und Paketmetadaten zugelassen; CI und Container behalten den exakten Pin. |
 | Apache Flink | **2.2.1** | Zentrale Stream-Processing-Laufzeit. Für die Linie 2.2 sind passende Kafka- und JDBC-Connectoren dokumentiert. Diese zusammenpassende Kombination ist der Grund für die Wahl dieser Linie. |
 | PyFlink | **2.2.1** | Python-Paket `apache-flink==2.2.1`. Gleiche Version wie die Flink-Laufzeit, um Abweichungen zwischen Python-API und JVM-Laufzeit zu vermeiden. |
 | Java | **17 LTS** | Von Flink empfohlene JVM-Version. Im Processing-Basisimage per Digest fixiert; README dokumentiert Temurin 17.0.20.1+1 als historischen Laufzeitnachweis. |
@@ -141,7 +144,7 @@ Linux x86_64 ist geprüft, andere Plattformen nicht verifiziert. Der frühere
 `requirements/previous-versions.txt` bewahrt frühere Versionsconstraints.
 Hashes fixieren Eingaben, garantieren keine bitweise identischen Docker-Layer.
 
-Service-CI prüft Installation, `pip check`, pytest, Ruff und mypy für `src tests`
+Service-CI prüft Installation, `pip check`, pytest, Ruff und mypy für `src tests scripts`
 bei Push/PR; Docker-Build und Laufzeit-Smoke-Test nur nach Push auf `main`.
 Hauptrepo-CI prüft Vertrag und Tools sowie separat Service-Kopien und Herkunft
 mit vollständiger Historie. Workflow-Dateien definieren den tatsächlichen Umfang;

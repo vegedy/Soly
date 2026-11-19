@@ -87,40 +87,44 @@ Bei reinen Hauptrepo-Aufgaben entfallen Service-PRs und Submodule-Aktualisierung
 
 ## Einrichtung und Prüfungen
 
-Alle Python-Projekte verwenden Python **3.12.15** und eine eigene `.venv`.
+Alle Python-Projekte verwenden lokal Python **3.12.x** und eine eigene `.venv`.
+CI und Docker sind auf **3.12.15** festgelegt. Die Entwicklungsbefehle werden
+unter Linux und Windows getestet; konkrete Umgebungen und Ergebnisse stehen im
+[Prüfprotokoll](docs/development-validation.md).
 Keine globale Paketinstallation. Befehle stets im jeweiligen Repository ausführen.
 
-Hauptrepo unter Linux/macOS:
+Die gemeinsamen Einstiege laufen ohne Shell-Aktivierung und unabhängig vom
+Aufrufverzeichnis. Unter Unix im Hauptrepo:
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install --require-hashes --only-binary=:all: -r requirements/dev.txt
-python -m pip check
-python -m pytest
-python -m ruff check .
-python -m ruff format --check .
-python -m mypy tests
-python -m pytest -m service_copies
+./dev.sh setup
+./dev.sh check
+./dev.sh check-integration
 ```
 
-Unter Windows die ersten beiden Befehle durch `py -3.12 -m venv .venv` und
-`.\.venv\Scripts\Activate.ps1` ersetzen. In neuen Shells die Umgebung erneut
-aktivieren. Die Standardtests brauchen keine Dienste oder Submodule;
-`service_copies` benötigt alle drei Submodule und die vollständige Hauptrepo-
-Historie (in CI `fetch-depth: 0`). Das Hauptrepo ist kein installierbares Paket.
+PowerShell: `.\dev.ps1 setup`, `.\dev.ps1 check` und
+`.\dev.ps1 check-integration`. `format` ist die ausdrücklich schreibende Aktion.
+Interpreterwahl, Pfade mit Leerzeichen, Richtlinienhinweise und der direkte
+Python-Einstieg sind in der [README](README.md#entwicklungsbefehle) beschrieben.
+Das Hauptrepo installiert kein eigenes Paket. `check-integration` benötigt alle
+drei initialisierten Submodule und die vollständige Hauptrepo-Historie;
+kein Entwicklungsbefehl aktualisiert Submodule automatisch.
 
-| Service | Einrichtung, Prüfungen und Build |
-|---|---|
-| Simulator | [README](simulator/README.md): hashgesicherter Dev-Lock, dann eigenes Paket ohne Abhängigkeitsauflösung/Build-Isolation installieren |
-| Ingestion | [README](ingestion/README.md): derselbe Installationsweg, zusätzlich Kafka-Client im Runtime-Lock |
-| Processing | [README](processing/README.md): Java 17 und `JAVA_HOME`; zuerst Build-Lock als Wheels, dann Dev-Lock mit `--no-build-isolation`, anschließend eigenes Paket; Linux x86_64 geprüft, andere Plattformen nicht verifiziert |
+Jeder Service besitzt dieselben eigenständig nutzbaren Einstiege mit
+`setup`, `check`, `format` und zusätzlich `docker-smoke`. Details:
+[Simulator](simulator/README.md), [Ingestion](ingestion/README.md),
+[Processing](processing/README.md). Processing benötigt Linux x86_64 mit Java 17
+und `JAVA_HOME`; unter Windows WSL2 oder Linux-Container verwenden. Native
+Windows-/macOS-Unterstützung für Processing wird nicht angeboten. Sein `setup`
+installiert den Build-Lock zuerst als Wheels, dann den Dev-Lock mit
+`--no-build-isolation`; Simulator/Ingestion installieren den Dev-Lock als Wheels
+und anschließend ihr Paket ohne zusätzliche Abhängigkeitsauflösung/Build-Isolation.
 
-In jedem Service laufen `python -m pip check`, `python -m pytest`,
-`python -m ruff check .`, `python -m ruff format --check .` und
-`python -m mypy src tests`. Nicht pauschal `--only-binary=:all:` auf den Processing-
-Dev-Lock anwenden: einige PyFlink-Abhängigkeiten benötigen Quell-Builds.
-Versionslisten, Lock-Generatoren und Docker-Befehle stehen in den Service-READMEs.
+`check` führt `pip check`, pytest, Ruff-Linting, Formatprüfung und mypy aus
+(Hauptrepo: `tests scripts`; Services: `src tests scripts`). Tool-Caches bleiben
+außerhalb des Checkouts. CI nutzt dieselben Befehle mit `--use-current-python`
+und dem bereits eingerichteten Interpreter. Lokal erzeugt/verwendet `setup`
+standardmäßig eine eigene `.venv` und verändert keine globalen Python-Pakete.
 
 Die Hauptrepo-CI führt Vertrags-, Lint-/Typ- und Herkunftsprüfungen bei Pushes und
 PRs nach `main` aus. Service-CI führt Python-Prüfungen bei jedem Push und PR nach
@@ -148,3 +152,8 @@ die Verfahren stehen in den Service-READMEs und im
 bewerten, kompatible Connectoren beibehalten. Secrets, private Rohdaten, `.venv`,
 Caches und generierte Artefakte gehören nicht in Commits. Fehlende oder gescheiterte
 Prüfungen ausdrücklich nennen; historische Nachweise nicht als neue Tests ausgeben.
+
+`check-integration` vergleicht auch die gemeinsamen Entwicklungsdateien der drei
+Services mit dem Hauptrepo. Nur die explizite `PROJECT`-Kennung in `scripts/dev.py`
+darf abweichen. Änderungen an gemeinsamen Wrappern, Ablaufsteuerung und Tests
+immer in allen Repositories übernehmen; die Services bleiben eigenständig nutzbar.

@@ -229,17 +229,13 @@ retry policy is introduced.
 From an independent main-repository checkout, Python **3.12.15**:
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install --require-hashes --only-binary=:all: -r requirements/dev.txt
-python -m pip check
-python -m pytest
-python -m ruff check .
-python -m ruff format --check .
-python -m mypy tests
+./dev.sh setup
+./dev.sh check
 ```
 
-On Windows use `py -3.12 -m venv .venv` and `.\.venv\Scripts\Activate.ps1`.
+On Windows use `.\dev.ps1 setup` and `.\dev.ps1 check`; no shell activation
+is needed. See [development commands](../README.md#entwicklungsbefehle) for
+interpreter selection and PowerShell policy guidance.
 No package installation of Soly itself is needed. The default test suite needs no
 submodules, network, Kafka, Flink, PostgreSQL, Home Assistant or credentials after
 dependency installation. JSON Schema `format` checking is explicitly activated
@@ -276,7 +272,8 @@ Run that separate integration check from a checkout with initialized submodules
 and full main-repository history (use `git fetch --unshallow` for a shallow clone):
 
 ```bash
-python -m pytest -m service_copies
+./dev.sh check-integration
+# PowerShell: .\dev.ps1 check-integration
 ```
 
 It also tests that missing/extra files, content drift, wrong hashes, invalid source
