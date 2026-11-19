@@ -1,83 +1,157 @@
 # SOLY-18: Entwicklungsbefehle und Validierung
 
-Nachweis vom **3. November 2026**. Gemeinsame Einstiege: `dev.sh`, `dev.ps1`
-und die repository-lokale Standardbibliothek-Steuerung `scripts/dev.py`.
-Die Services benötigen weder einen Hauptrepo-Checkout noch benachbarte Services.
+Die Entwicklungsbefehle sind **unter Linux und Windows getestet**. Hauptrepo,
+Simulator und Ingestion verwenden unter beiden Betriebssystemen dieselben
+Prüfschritte und Hash-Locks. Processing verwendet Linux x86_64 mit Java 17;
+unter Windows wird dieser Linux-Weg über WSL2 oder Linux-Container ausgeführt.
 
-## Tatsächlich lokal ausgeführt
+## Prüfstand vom 19. November 2026
 
-Umgebung: **Linux x86_64**, **Python 3.12.15**, POSIX-Shell und
-**PowerShell 7.5.4**; Processing zusätzlich mit **OpenJDK 17** und `JAVA_HOME`.
-Die portable PowerShell wurde separat mit dem offiziellen Archiv-Hash geprüft;
-sie ist keine Projektabhängigkeit und wird nicht eingecheckt.
+Grundlage sind die aktuellen `SOLY-18_development_commands`-Branches und die
+unten beschriebenen Korrekturen in den Arbeitskopien:
 
-Alle vier Repositories wurden zusätzlich als frische, eigenständige Kopien
-ohne `.venv`, Git-Metadaten oder benachbarte Services in einem Pfad mit
-Leerzeichen unter `/tmp` geprüft. Die Befehle wurden von außerhalb des jeweiligen
-Repository-Verzeichnisses aufgerufen:
+| Repository | Abgerufener Commit |
+|---|---|
+| Hauptrepo | `a70f894840f6df68573d2a97f6ca527d657cda39` |
+| Simulator | `cc744de51e7db037301e74c93fcc1bcd13c20718` |
+| Ingestion | `afe09821d7e80b312bde4fd00350cca546072f90` |
+| Processing | `a6cbe41b1fded93ba976cf540a3b0068158fdb85` |
 
-| Prüfung | Hauptrepo | Simulator | Ingestion | Processing |
-|---|---|---|---|---|
-| `setup` über Unix, danach erneut über PowerShell | erfolgreich | erfolgreich | erfolgreich | erfolgreich |
-| `check` über Unix und PowerShell | erfolgreich | erfolgreich | erfolgreich | erfolgreich |
-| `format` über Unix und PowerShell | erfolgreich | erfolgreich | erfolgreich | erfolgreich |
-| `setup/check --use-current-python` im eingerichteten Interpreter | erfolgreich | erfolgreich | erfolgreich | erfolgreich |
-| Projektdatei-Inhalte und Änderungszeiten vor/nach beiden Checks identisch | bestätigt | bestätigt | bestätigt | bestätigt |
-| pytest im Standardlauf | 95 bestanden | 15 bestanden | 15 bestanden | 15 bestanden |
-| pip check, Ruff-Linting, Ruff-Formatprüfung, mypy | erfolgreich | erfolgreich | erfolgreich | erfolgreich |
+Die Commit-IDs bezeichnen die Ausgangsstände vor den anschließend geprüften
+lokalen Korrekturen.
 
-`format` ließ die bereits formatierten frischen Checkouts unverändert. Die
-14 neuen Regressionstests je Repository prüfen unter anderem Versionsfehler,
-Schutz vor globaler Installation, Erhalt unvollständiger Umgebungen, Hash-Locks
-und Processing-Buildreihenfolge, nicht schreibende Prüfabläufe, fehlendes Java/
-Docker, Plattformhinweise, Docker-Isolation sowie Argumente und Fehlercodes beider
-Wrapper in Pfaden mit Leerzeichen.
+| Umgebung | Python | Shells | Umfang |
+|---|---|---|---|
+| Windows 10 x86_64, Build 19045 | 3.12.10 | Windows PowerShell 5.1.19041.6456 und PowerShell 7.6.9 | Hauptrepo, Simulator, Ingestion; Processing-Plattformprüfung |
+| Linux x86_64, Ubuntu 22.04.5 unter WSL2 | 3.12.16 | POSIX-Shell und PowerShell 7.5.4 | Hauptrepo, Simulator, Ingestion; Processing mit Java 17 |
 
-Im vollständigen Hauptrepo-Checkout wurden außerdem `check-integration` über
-Unix und PowerShell ausgeführt: **9 Prüfungen bestanden**, einschließlich
-Vertragskopien, Hashes und Herkunft aus der veröffentlichten Hauptrepo-Historie.
-Keine Lockdateien, Vertragsartefakte, Laufzeitpins oder Image-Digests wurden verändert.
+WSL2 verwendet Kernel `6.18.58.1-microsoft-standard-WSL2`. Die Linux-PowerShell
+wurde als temporäres Werkzeug anhand des offiziellen Release-Hashes geprüft.
+Windows und Linux besitzen getrennte virtuelle Umgebungen. Lokal sind
+3.12-Patchstände zugelassen; CI und Container behalten Python 3.12.15.
 
-## Container
+## Einrichtung und Prüfungen
 
-`./dev.sh docker-smoke` lief in allen drei Services auf **linux/amd64** erfolgreich:
+Zusätzlich zum bestehenden Windows-Checkout wurden die Projekte als frische,
+eigenständige Kopien ohne `.venv`, Git-Metadaten oder benachbarte Services geprüft.
+Die Kopien liegen in Pfaden mit Leerzeichen. Alle Aufrufe erfolgen außerhalb des
+jeweiligen Repository-Verzeichnisses.
 
-- Simulator: Python 3.12.15, installiertes Paket aus `site-packages` und Metadaten.
-- Ingestion: dieselben Prüfungen sowie confluent-kafka 2.16.0 und librdkafka-Import.
-- Processing: Python 3.12.15, PyFlink/Flink 2.2.1, Temurin 17.0.20.1,
-  lokale Stream-/Table-Umgebung, vorhandene Kafka-/JDBC-/PostgreSQL-Klassen und
-  Table-Pläne. Kein fachlicher Job oder Datenbank-Schreibnachweis.
+Für Hauptrepo, Simulator und Ingestion bestanden unter beiden Betriebssystemen:
 
-Die bestehenden Smoke-Dateien und Container-Isolationsoptionen bleiben erhalten.
-Die Wrapper bauen mit `--platform linux/amd64`; der anschließende Test läuft
-mit `--network none`, ohne Mounts und außerhalb des Quellbaums. Simulator/Ingestion
-verwenden weiter `--read-only`; Processing behält seine temporär beschreibbaren
-Verzeichnisse und den expliziten Python-Einstieg.
+- frisches `setup`, wiederholtes `setup` mit Erhalt der bestehenden `.venv`;
+- vollständiges `check` über beide Shell-Einstiege: Linux mit POSIX-Shell und
+  PowerShell 7, Windows mit Windows PowerShell 5.1 und PowerShell 7;
+- `setup/check --use-current-python` in der virtuellen Umgebung;
+- `format` über beide Einstiege, ohne Änderung der bereits formatierten Dateien.
 
-## Plattformen und CI
+`check` umfasst `pip check`, pytest, Ruff-Linting, Ruff-Formatprüfung und mypy
+einschließlich `scripts/`. Dateiinhalt und Änderungszeit der Projektdateien blieben
+bei den Prüfungen unverändert. Die pytest-Ergebnisse pro Standardlauf:
 
-Die CI nutzt dieselben Einstiege mit `--use-current-python` und erzeugt keine
-zusätzliche `.venv`. Alle vier Repositories prüfen Unix und PowerShell 7 unter
-Ubuntu 24.04; Hauptrepo, Simulator und Ingestion verwenden Checkout-Pfade mit
-Leerzeichen. Processing verwendet zusätzlich Java 17. Docker-Jobs laufen weiter
-nur nach Push auf `main` und erfolgreichen Checks.
+| Repository | Linux | Windows |
+|---|---|---|
+| Hauptrepo | 113 bestanden | 106 bestanden, 7 übersprungen |
+| Simulator | 33 bestanden | 26 bestanden, 7 übersprungen |
+| Ingestion | 33 bestanden | 26 bestanden, 7 übersprungen |
+| Processing | 33 bestanden | Linux-Weg; native Plattformabgrenzung geprüft |
 
-Ein nativer Windows-2025-Lauf wurde versucht. `actions/setup-python` konnte
-Python **3.12.15** dort nicht bereitstellen, bevor die Projektbefehle starteten
-([Simulator-Nachweis](https://github.com/vegedy/Soly-Simulator/actions/runs/41679598644)).
-Die endgültige CI prüft PowerShell deshalb unter Linux, ohne Laufzeitpins oder
-Locks für Windows zu ändern. Native Windows-Ausführung, Windows PowerShell 5.1
-und macOS sind nicht verifiziert. Für Hauptrepo, Simulator und Ingestion bleibt
-der native PowerShell-Einstieg mit selbst bereitgestelltem Python 3.12.15
-verfügbar; zunächst WSL2 mit einem Linux-Checkout verwenden. Processing lehnt
-native Windows-/macOS-Entwicklung ausdrücklich ab; dort WSL2 oder den vorhandenen
-Linux-Container nutzen. WSL2 selbst wurde lokal nicht ausgeführt.
-Keine Skripte umgehen PowerShell-Richtlinien oder ändern globale Konfiguration.
+Die sieben unter Windows übersprungenen Fälle betreffen den Unix-Einstieg und
+ausführbare Unix-Testattrappen; sie werden unter Linux vollständig ausgeführt.
+Die separaten Integrationsfälle sind im Standardlauf des Hauptrepos abgewählt.
 
-## Vorläufige Integration ohne Pull Requests
+Ingestion wurde unter Windows zusätzlich mit isoliertem Python importiert:
+confluent-kafka 2.16.0 und die native librdkafka 2.16.0 wurden erfolgreich geladen.
 
-Der Hauptrepo-Branch `SOLY-18_development_commands` verweist vorläufig auf die
-gepushten Arbeitsbranch-Commits der drei Services. Es wurden keine Pull Requests
-erstellt oder Merges ausgeführt; das Issue bleibt offen. Nach späteren Service-
-Merges die tatsächlich resultierenden Commits im Hauptrepo übernehmen und
-`check-integration` erneut ausführen, insbesondere bei Squash oder Rebase.
+Im vollständigen Hauptrepo mit Historie und allen drei Unterrepos bestanden
+jeweils **19 Integrationsprüfungen** über `check-integration`: unter Linux über
+POSIX-Shell und PowerShell 7, unter Windows über PowerShell 7 und Windows
+PowerShell 5.1. Sie prüfen Vertragskopien, Hashes und Herkunft sowie gemeinsame
+Entwicklungsskripte einschließlich der Prüfungen gegen abweichende Kopien.
+
+## Processing und Container
+
+Processing bestand denselben vollständigen Ablauf unter Linux in WSL2:
+frisches und wiederholtes Setup, Checks und Formatierung über POSIX-Shell und
+PowerShell 7 sowie Setup/Check mit dem aktuellen virtuellen Interpreter.
+`JAVA_HOME` verwies auf **Temurin 17.0.20.1+1**, temporär aus dem unveränderten
+Flink-Basisimage bereitgestellt, ohne globale Java-Installation.
+
+Die native Plattformabgrenzung wurde unter Windows mit beiden PowerShell-Versionen
+geprüft: `setup`, `check` und `format` enden jeweils mit Fehlercode 1 und einem
+Linux-/WSL2-Hinweis, bevor eine `.venv` angelegt wird.
+
+Aktuelle Container-Builds und isolierte Laufzeit-Smoke-Tests auf **linux/amd64**
+mit Docker Engine **29.1.3**:
+
+| Service | Aktueller Build und `docker-smoke` |
+|---|---|
+| Simulator | erfolgreich |
+| Ingestion | erfolgreich |
+| Processing | erfolgreich |
+
+Die Smoke-Tests laufen mit `--network none`, ohne Mounts und außerhalb des
+Quellbaums. Simulator und Ingestion verwenden `--read-only`; Processing behält
+seine temporär beschreibbaren Verzeichnisse und den expliziten Python-Einstieg.
+Geprüft werden Paketinstallation und Metadaten mit Python 3.12.15, bei Ingestion
+zusätzlich der Kafka-Client und bei Processing PyFlink/Flink 2.2.1, Java 17 sowie
+Connector-Klassen und Table-Pläne. Die Tabelle dokumentiert die aktuellen
+Ergebnisse; frühere Nachweise sind unten gesondert datiert.
+
+## Korrekturen aus dem Durchlauf
+
+- `dev.sh` ist in allen vier Repositories wieder als ausführbare Datei versioniert.
+  Ein frischer Linux-Checkout kann den dokumentierten Aufruf `./dev.sh` verwenden.
+- Die drei Service-Paketmetadaten erlauben `>=3.12,<3.13`, passend zur bestehenden
+  lokalen Versionsprüfung. Die Paketinstallation akzeptiert damit die lokal
+  vorgesehenen 3.12-Patchstände.
+- Der gemeinsame Regressionstest verwendet den eigenen `subprocess`-Import
+  statt eines nicht exportierten Attributs aus `scripts.dev`; mypy besteht.
+  Dieselbe Testdatei ist in allen vier Repositories nach Ruff formatiert.
+- Die gemeinsame `.gitattributes` legt für XML-Dateien LF-Zeilenenden fest.
+  Dadurch bleibt der Hash der Connector-Konfiguration unter Linux und Windows
+  identisch. Der Git-Export wurde unter Windows geprüft; die vorhandene POM-
+  Hashvorgabe und der Connector-Lock wurden unverändert beibehalten.
+
+Veröffentlichte Vertragsartefakte, Herkunftsmanifeste, Hash-Locks, `.python-version`,
+CI-Laufzeitpins und Image-Digests bleiben unverändert. Die Paket-Metadatenregel
+ändert die lokal zugelassenen Interpreter, nicht die Abhängigkeitsversionen.
+
+## CI, frühere Nachweise und Umfang
+
+Die bestehende CI verwendet Ubuntu 24.04 und Python 3.12.15 mit den gemeinsamen
+Einstiegen einschließlich PowerShell 7. Ein zusätzlicher Job prüft frisches und
+wiederholtes lokales Setup in einem Checkout-Pfad mit Leerzeichen, den Erhalt
+der `.venv` und anschließende Checks ohne `--use-current-python`. Docker-Jobs
+laufen nach Push auf `main` und erfolgreichen Python-Prüfungen. Die lokalen
+Windows-Ergebnisse sind ein eigener Nachweis, kein Windows-CI-Lauf.
+
+Der frühere Nachweis vom **3. November 2026** verwendete Linux x86_64, Python
+3.12.15 und PowerShell 7.5.4, für Processing zusätzlich OpenJDK 17. Damals
+bestanden 95 Hauptrepo-Tests, je 15 Service-Tests und 9 Integrationsprüfungen.
+Alle drei Container-Smoke-Tests wurden auf linux/amd64 erfolgreich ausgeführt.
+Diese Zahlen gehören zum damaligen Testumfang und ersetzen keine aktuellen Läufe.
+
+Der vorhandene Testumfang prüft Projektwerkzeuge, Verträge, Paketinstallation
+und Laufzeit-Smoke-Tests. Ein fachlicher Durchlauf von Ingestion über Kafka und
+Flink bis PostgreSQL ist noch nicht implementiert. Klassen- und Table-Planungsprüfungen
+sind kein eingereichter Streaming-Job oder Datenbank-Schreibnachweis. macOS wurde
+nicht geprüft.
+
+## Abschlussintegration vom 19. November 2026
+
+Die Service-PRs wurden nach erfolgreichen PR-Prüfungen gemergt. Das Hauptrepo
+integriert die tatsächlich resultierenden, veröffentlichten `main`-Commits:
+
+| Service | Gemergter Commit | Pull Request | Erfolgreiche PR-CI |
+|---|---|---|---|
+| Simulator | `91beb000430cc69d767afd2ed89c800fa800a95b` | [#5](https://github.com/vegedy/Soly-Simulator/pull/5) | [CI](https://github.com/vegedy/Soly-Simulator/actions/runs/44501921167) |
+| Ingestion | `97f3feef7b354877a757e9d88a8bbe53815a9645` | [#5](https://github.com/vegedy/Soly-Ingestion/pull/5) | [CI](https://github.com/vegedy/Soly-Ingestion/actions/runs/44501936743) |
+| Processing | `edfcd03a7292d621482d04d1339eb3dd4c748229` | [#5](https://github.com/vegedy/Soly-Processing/pull/5) | [CI](https://github.com/vegedy/Soly-Processing/actions/runs/44501952235) |
+
+Die Inhalte der Merge-Commits stimmen exakt mit den lokal geprüften Service-
+Ständen überein. Mit diesen endgültigen Service-Verweisen wurde
+`check-integration` erneut ausgeführt: **jeweils 19 Prüfungen bestanden**, unter
+Windows mit Windows PowerShell 5.1 und PowerShell 7 sowie unter Linux mit
+POSIX-Shell und PowerShell 7. Vertragskopien, Herkunft und gemeinsame
+Entwicklungsdateien sind damit auch nach den Service-Merges geprüft.

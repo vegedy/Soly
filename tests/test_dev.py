@@ -73,8 +73,8 @@ def test_venv_accepts_any_python_3_12_patch(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setattr(dev, "ROOT", tmp_path)
-    python = tmp_path / ".venv" / (
-        "Scripts/python.exe" if os.name == "nt" else "bin/python"
+    python = (
+        tmp_path / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
     )
     python.parent.mkdir(parents=True)
     python.touch()
@@ -83,11 +83,13 @@ def test_venv_accepts_any_python_3_12_patch(
     )
     commands: list[list[str]] = []
 
-    def fake_run(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+    def fake_run(
+        command: list[str], **kwargs: object
+    ) -> subprocess.CompletedProcess[str]:
         commands.append(command)
         return subprocess.CompletedProcess(command, 0)
 
-    monkeypatch.setattr(dev.subprocess, "run", fake_run)
+    monkeypatch.setattr(subprocess, "run", fake_run)
     dev.validate_venv(python)
     assert "sys.version_info[:2] == (3, 12)" in commands[0][-1]
 

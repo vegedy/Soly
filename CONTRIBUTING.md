@@ -87,7 +87,10 @@ Bei reinen Hauptrepo-Aufgaben entfallen Service-PRs und Submodule-Aktualisierung
 
 ## Einrichtung und Prüfungen
 
-Alle Python-Projekte erlauben lokal Python **3.12.x** (z. B. 3.12.10) und verwenden eine eigene `.venv`. CI und Docker bleiben bei **3.12.15**.
+Alle Python-Projekte verwenden lokal Python **3.12.x** und eine eigene `.venv`.
+CI und Docker sind auf **3.12.15** festgelegt. Die Entwicklungsbefehle werden
+unter Linux und Windows getestet; konkrete Umgebungen und Ergebnisse stehen im
+[Prüfprotokoll](docs/development-validation.md).
 Keine globale Paketinstallation. Befehle stets im jeweiligen Repository ausführen.
 
 Die gemeinsamen Einstiege laufen ohne Shell-Aktivierung und unabhängig vom

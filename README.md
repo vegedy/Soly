@@ -15,7 +15,8 @@ Die Service-Implementierungen folgen in eigenen Issues.
 
 ## Entwicklungsbefehle
 
-Voraussetzung für lokale Entwicklung: **Python 3.12.x** (z. B. 3.12.10). `dev.sh` (POSIX-Shell unter Unix) und `dev.ps1`
+Voraussetzung für lokale Entwicklung: **Python 3.12.x**. `dev.sh`
+(POSIX-Shell unter Linux) und `dev.ps1`
 (Windows PowerShell 5.1 oder PowerShell 7) delegieren an `scripts/dev.py` mit
 Python-Standardbibliothek. Lokal sind alle 3.12-Patchversionen zugelassen.
 **CI und Docker bleiben auf Python 3.12.15 festgelegt**; Locks und Image-Pins
@@ -74,13 +75,13 @@ $env:SOLY_PYTHON = 'C:\Pfad zu Python\python.exe'
 ```
 
 
-**Windows-Weg:** Für Hauptrepo, Simulator und Ingestion ist lokal Python
-3.12.x vorgesehen (z. B. 3.12.10). `dev.ps1` verwendet automatisch `py -3.12`,
-sofern weder `SOLY_PYTHON` noch eine vorhandene `.venv` Vorrang haben. Version
-prüfen: `py -3.12 --version`. `SOLY_PYTHON` bleibt als Override erhalten.
-Native Windows-Ausführung einschließlich Windows PowerShell 5.1 wurde noch nicht
-vollständig getestet. Processing benötigt weiterhin WSL2 oder Linux-Container,
-da natives Windows-PyFlink nicht unterstützt wird.
+**Unter Linux und Windows getestet:** Hauptrepo, Simulator und Ingestion nutzen
+lokal Python 3.12.x und dieselben Hash-Locks. Unter Linux dient `dev.sh` als
+Einstieg, unter Windows `dev.ps1` mit Windows PowerShell 5.1 oder PowerShell 7.
+`dev.ps1` findet Python über `py -3.12`, sofern weder `SOLY_PYTHON` noch eine
+vorhandene `.venv` Vorrang haben. Processing verwendet Linux x86_64 mit Java 17;
+unter Windows läuft dieser Entwicklungsweg in WSL2 oder Linux-Containern.
+Umgebungen, Ergebnisse und Grenzen stehen im [Prüfprotokoll](docs/development-validation.md).
 
 Falls die lokale PowerShell-Richtlinie Skripte sperrt, die geltende Richtlinie
 prüfen oder den Python-Einstieg direkt aufrufen; die Skripte ändern keine
