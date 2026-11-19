@@ -26,3 +26,9 @@
   benötigt initialisierte Submodule und vollständige Hauptrepo-Historie.
   Service-Prüfungen im jeweiligen Service ausführen. CI verwendet dieselben
   Einstiege mit `--use-current-python`. Tatsächliche Ergebnisse dokumentieren.
+- Der lokale Infrastruktur-Stack steht in `compose.yml`; Anleitung und tatsächliche
+  Nachweise unter `docs/local-infrastructure.md` und `docs/infrastructure-validation.md`.
+  `stack-up`/`stack-smoke` benötigen Docker mit Linux amd64 und Compose, keine `.venv`.
+  `stack-down` erhält Daten; ausschließlich `stack-reset --yes` entfernt Projektvolumes.
+  Die markierten `SOLY MAIN-ONLY STACK`-Blöcke sind Hauptrepo-Erweiterungen;
+  der gemeinsame Rest der Entwicklungswerkzeuge bleibt bytegleich mit den Services.

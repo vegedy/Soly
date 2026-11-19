@@ -205,9 +205,20 @@ def docker_smoke() -> None:
 
 
 def main() -> int:
+    # BEGIN SOLY MAIN-ONLY STACK
+    if sys.argv[1:2] and sys.argv[1].startswith("stack-"):
+        # Direct script execution adds only this repository to the module path.
+        sys.path.insert(0, str(ROOT))
+        from scripts.stack import main as stack_main
+
+        return stack_main(sys.argv[1:])
+    # END SOLY MAIN-ONLY STACK
     commands = ["setup", "check", "format"]
     commands.append("docker-smoke" if SERVICE else "check-integration")
     parser = argparse.ArgumentParser(description=__doc__)
+    # BEGIN SOLY MAIN-ONLY STACK
+    parser.epilog = "Local infrastructure: stack-build, stack-up, stack-status, stack-smoke, stack-down, stack-reset --yes."
+    # END SOLY MAIN-ONLY STACK
     parser.add_argument("command", choices=commands)
     parser.add_argument(
         "--use-current-python",

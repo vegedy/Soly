@@ -10,6 +10,11 @@ for argument in "$@"; do
         break
     fi
 done
+# BEGIN SOLY MAIN-ONLY STACK
+case "${1:-}" in
+    stack-*) docker_smoke=true ;;
+esac
+# END SOLY MAIN-ONLY STACK
 if [ -n "${SOLY_PYTHON:-}" ]; then
     python=$SOLY_PYTHON
 elif [ "$docker_smoke" = false ] && [ -x "$repo_dir/.venv/bin/python" ]; then

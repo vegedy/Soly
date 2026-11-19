@@ -14,7 +14,12 @@ konkreten Service-Commit-Verweise. Die Services sind eigenständige Repositories
 | `processing/` | [Soly-Processing](https://github.com/vegedy/Soly-Processing) | Kafka-Verarbeitung, fachliche Normalisierung, Event-Time-Energieintegration und PostgreSQL-Ergebnisse |
 
 Aktuell bestehen Python-Paketfundamente, Lockdateien, Container-Smoke-Tests, CI
-und Vertragskopien. Die fachliche Pipeline ist noch nicht implementiert.
+und Vertragskopien. Der lokale Kafka-/PostgreSQL-/Flink-Stack ist über
+`stack-up`, `stack-status`, `stack-smoke` und `stack-down` in die Hauptrepo-
+Entwicklungsbefehle integriert; nur `stack-reset --yes` löscht Projektdaten.
+Einrichtung und Infrastruktur-CI stehen in der
+[Stack-Anleitung](docs/local-infrastructure.md). Die fachliche Pipeline ist noch
+nicht implementiert.
 [Technologieentscheidungen](Soly-Technologieentscheidungen.md) trennen ausgewählte
 Versionen, implementierten Stand und ausstehende Nachweise. Der
 [Git-Workflow](Soly-Issue-und-Git-Workflow.md) beschreibt die Namens- und

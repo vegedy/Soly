@@ -5,13 +5,16 @@
 - **Repository-Abgleich:** 2. November 2026 (SOLY-17)
 - **Entwicklungsbefehle:** Unter Linux und Windows geprüft am 19. November 2026
   (SOLY-18); Umgebungen und Ergebnisse im [Prüfprotokoll](docs/development-validation.md).
+- **Lokale Infrastruktur:** SOLY-19 ergänzt den geprüften Compose-Stack;
+  [Nachweise vom 19. November 2026](docs/infrastructure-validation.md).
 - **Status:** Historische Auswahl vom 23. Oktober mit inzwischen implementierten Service-Fundamenten abgeglichen. Die Service-READMEs und das SOLY-18-Prüfprotokoll dokumentieren konkrete Testumgebungen und Nachweise. Die Versionsbegründungen beziehen sich auf den Auswahlzeitpunkt; der vollständige fachliche Pipeline-Test steht aus.
 
 Maßgebliche Implementierung: [Simulator-README](simulator/README.md),
 [Ingestion-README](ingestion/README.md), [Processing-README](processing/README.md),
 jeweilige `pyproject.toml`, `requirements/`, `Dockerfile` und
-`.github/workflows/ci.yml`. Die Auswahlversionen unten werden beibehalten;
-noch nicht eingesetzte Infrastruktur wird ausdrücklich als Zielstand behandelt.
+`.github/workflows/ci.yml` sowie die Compose-Konfiguration und Infrastruktur-CI
+im Hauptrepo. Die Auswahlversionen unten werden beibehalten; der lokale
+Infrastrukturstart ist umgesetzt, die fachliche Pipeline bleibt ausstehend.
 [CONTRIBUTING.md](CONTRIBUTING.md) beschreibt Einrichtung und Prüfungen.
 Die externen Quellen sind die Referenzen der ursprünglichen Auswahl; sie wurden
 für diesen Repository-Abgleich nicht erneut recherchiert.
@@ -44,8 +47,8 @@ Es gelten folgende Grundsätze:
 | Apache Flink | **2.2.1** | Zentrale Stream-Processing-Laufzeit. Für die Linie 2.2 sind passende Kafka- und JDBC-Connectoren dokumentiert. Diese zusammenpassende Kombination ist der Grund für die Wahl dieser Linie. |
 | PyFlink | **2.2.1** | Python-Paket `apache-flink==2.2.1`. Gleiche Version wie die Flink-Laufzeit, um Abweichungen zwischen Python-API und JVM-Laufzeit zu vermeiden. |
 | Java | **17 LTS** | Von Flink empfohlene JVM-Version. Im Processing-Basisimage per Digest fixiert; README dokumentiert Temurin 17.0.20.1+1 als historischen Laufzeitnachweis. |
-| Apache Kafka | **4.2.2** | Veröffentlichter stabiler Patchstand für die Ereignispufferung. Ziel für das lokale MVP: ein Broker im KRaft-Modus ohne ZooKeeper; Broker-/Compose-Setup ist noch nicht umgesetzt. |
-| PostgreSQL | **18.6** | Ausgewählter Zielstand für Energieaggregate und SQL-Views; Datenbank-/Compose-Setup steht noch aus. JDBC-Treiber siehe Abschnitt 4. |
+| Apache Kafka | **4.2.2** | Ein lokaler Broker im KRaft-Modus ohne ZooKeeper ist mit SOLY-19 in Compose eingerichtet; fachliches Publishing und Processing folgen separat. |
+| PostgreSQL | **18.6** | Lokaler Datenbankstart und SQL-Infrastrukturprüfung sind mit SOLY-19 eingerichtet; Energieaggregate und fachliche SQL-Views folgen separat. JDBC-Treiber siehe Abschnitt 4. |
 
 Die Auswahl von Flink 2.2.1 bedeutet nicht, dass grundsätzlich keine neuere Flink-Version eingesetzt werden könnte. Sie legt eine konkrete Basis fest, für die die benötigten Connector-Versionen recherchiert wurden. Ein Wechsel der Flink-Linie wird als gemeinsame Änderung von Laufzeit, PyFlink und Connectoren bewertet.
 
@@ -105,8 +108,11 @@ den Flink-Digest, einen geprüften Python-Quellhash und einen datierten
 Ubuntu-Paketsnapshot. Konkrete Digests und der historische JVM-Nachweis stehen in
 den Service-READMEs, damit diese Werte nicht an mehreren Stellen gepflegt werden.
 JobManager und TaskManager verwenden dasselbe Processing-Image und den expliziten
-Python-Interpreter. Kafka und PostgreSQL sind weiterhin ausgewählte Zielstände;
-ihre Infrastruktur und Digests sind noch nicht im Hauptrepo eingerichtet.
+Python-Interpreter. SOLY-19 ergänzt Kafka und PostgreSQL im lokalen Compose-Stack
+mit fixierten linux/amd64-Manifest-Digests. Adressen, Volumes, Entwicklungsbefehle
+und die tatsächlich verwendeten Digests stehen in der
+[Stack-Anleitung](docs/local-infrastructure.md); tatsächliche Infrastruktur-
+Nachweise werden [separat protokolliert](docs/infrastructure-validation.md).
 Ein Versions-Tag allein fixiert nicht alle Betriebssystempakete oder JVM-Patches.
 
 Quellen:
@@ -168,11 +174,11 @@ Umgebung, keine im Rahmen von SOLY-17 erneut ausgeführten Builds:
 | Simulator / Ingestion | Python-Basisimage per Digest, Hash-Locks, installierbares Paket und Container-Smoke-Test; Python-Version und Imports dokumentiert | keine Ereignisgenerierung, Adapter oder Broker-Verbindung |
 | Processing | gemeinsames Rollenimage, Python-Quellbuild, PyFlink/Java, Connector-Lock, Klassenlade- und Table-Planungs-Smoke-Test | kein eingereichter fachlicher Job oder Datenbank-Schreibnachweis |
 | Vertrag | zentrale v1-Spezifikation, Schemata/Beispiele, lokale Service-Kopien mit Commit und Hashes, Vertrags-/Herkunftsprüfungen | keine implementierte fachliche Pipeline |
-| Kafka / PostgreSQL | Versionen ausgewählt, Client-/Connector-Artefakte gelockt | noch kein Gesamt-Compose, Broker-/DB-Start oder Ende-zu-Ende-Test |
+| Kafka / PostgreSQL / Flink-Cluster | SOLY-19: lokales Compose, Digest-Pins, Healthchecks, Topic-Initialisierung und Infrastruktur-Smoke-Test; Nachweise im Infrastrukturprotokoll | noch kein fachlicher Ende-zu-Ende-Test oder Checkpoint-Recovery-Nachweis |
 
 Noch ausstehend sind insbesondere:
 
-1. Kafka-/PostgreSQL-Basisimages beziehen, Digests erfassen und Gesamt-Setup bauen.
+1. Infrastruktur-Nachweise bei Versionsänderungen erneut ausführen; aktuelle Ergebnisse stehen im [Infrastrukturprotokoll](docs/infrastructure-validation.md).
 2. Bekannte Daten über JSONL/Ingestion → Kafka → PyFlink → PostgreSQL verarbeiten.
 3. Erwartete Ergebnisse und idempotenten UPSERT tatsächlich prüfen.
 4. Fachliche Event-Time-/Qualitätsfälle, Wiederherstellung nach Ausfällen,
@@ -189,8 +195,7 @@ Versionsänderungen erfolgen bewusst und nachvollziehbar. Bei Änderungen an Fli
 
 Noch nicht durch dieses Dokument festgelegt sind insbesondere:
 
-- Konkrete Docker-Engine- und Compose-Plugin-Version auf Entwicklungs- und CI-Rechnern.
-- Kafka-/PostgreSQL-Image-Digests für das kommende Gesamt-Setup.
+- Weitere Docker-/Compose- und Plattformstände außerhalb der im Infrastrukturprotokoll geprüften Umgebung.
 - Plattform-Lockstände außerhalb der bisher geprüften Umgebungen.
 - Weitere Bibliotheken, etwa für Home-Assistant-WebSocket-Zugriff und Konfigurationsvalidierung.
 - Die fachliche Sink-Implementierung auf Basis der bereits gewählten JDBC-Table-API und gelockten Abhängigkeiten.

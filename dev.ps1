@@ -4,6 +4,11 @@ $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 $env:PYTHONDONTWRITEBYTECODE = '1'
 $dockerSmoke = $args -ccontains 'docker-smoke'
+# BEGIN SOLY MAIN-ONLY STACK
+if ($args.Count -gt 0 -and $args[0] -clike 'stack-*') {
+    $dockerSmoke = $true
+}
+# END SOLY MAIN-ONLY STACK
 $pythonArgs = @()
 if ($env:SOLY_PYTHON) {
     $python = $env:SOLY_PYTHON
